@@ -20,6 +20,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.9'
 }
 
 tasks.named('test') {
