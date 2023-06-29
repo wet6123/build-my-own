@@ -23,7 +23,7 @@ public class NameController {
     @GetMapping("")
     @ApiImplicitParam(name = "type", value = "차량 타입")
     public ResponseEntity<List<Name>> showCars(@RequestParam("type") String car_type) {
-        List<Name> names = nameService.showNameByType(car_type);
-        return new ResponseEntity<>(names, HttpStatus.OK);
+        List<Name> car_names = nameService.showNameByType(car_type);
+        return new ResponseEntity<>(car_names, HttpStatus.OK);
     }
 }

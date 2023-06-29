@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Name {
     private int id;
-    private String name;
+    private String car_name;
     private String car_type;
     private boolean is_new;
     private int start_price;

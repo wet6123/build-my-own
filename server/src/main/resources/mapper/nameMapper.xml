@@ -5,7 +5,7 @@
 <mapper namespace="com.hyundai.server.model.dao.NameDao">
     <resultMap id="nameMap" type="name">
         <id column="id" property="id"/>
-        <result column="name" property="name"/>
+        <result column="car_name" property="car_name"/>
         <result column="car_type" property="car_type"/>
         <result column="is_new" property="is_new"/>
         <result column="start_price" property="start_price"/>
@@ -13,8 +13,8 @@
     </resultMap>
 
     <select id="selectNameByType" parameterType="String" resultMap="nameMap">
-        SELECT name_id AS id, name, car_type, is_new, start_price, car_image
-        FROM names
+        SELECT name_id AS id, car_name, car_type, is_new, start_price, car_image
+        FROM car_names
         WHERE car_type = #{car_type};
     </select>
 </mapper>
