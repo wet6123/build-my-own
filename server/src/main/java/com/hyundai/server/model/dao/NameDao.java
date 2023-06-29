@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface NameDao {
-    List<Name> selectNameByType(String car_type);
+    List<Name> selectNameByType(String carType);
 }

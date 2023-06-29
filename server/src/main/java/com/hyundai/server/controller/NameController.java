@@ -22,8 +22,8 @@ public class NameController {
 
     @GetMapping("")
     @ApiImplicitParam(name = "type", value = "차량 타입")
-    public ResponseEntity<List<Name>> showCars(@RequestParam("type") String car_type) {
-        List<Name> carNames = nameService.showNameByType(car_type);
+    public ResponseEntity<List<Name>> showCars(@RequestParam("type") String carType) {
+        List<Name> carNames = nameService.showNameByType(carType);
         return new ResponseEntity<>(carNames, HttpStatus.OK);
     }
 }
