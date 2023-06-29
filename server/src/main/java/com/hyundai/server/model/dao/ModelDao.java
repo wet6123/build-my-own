@@ -8,6 +8,9 @@ import java.util.List;
 
 @Repository
 public interface ModelDao {
-    List<PowertrainDto> selectPowertrainByCarName(String carName);
-    List<TrimDto> selectTrimByModel(String carName, String engine, String transmission, String drivetrain);
+    List<String> selectEngine(int carNameId);
+    List<String> selectTransmission(int carNameId);
+    List<String> selectDrivetrain(int carNameId);
+    List<PowertrainDto> selectPowertrainByCarNameId(int carNameId);
+    List<TrimDto> selectTrimByModel(int carNameId, String engine, String transmission, String drivetrain);
 }
