@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Name {
     private int id;
-    private String name;
-    private String car_type;
-    private boolean is_new;
-    private int start_price;
-    private String car_image;
+    private String carName;
+    private String carType;
+    private boolean isNew;
+    private int startPrice;
+    private String carImage;
 }

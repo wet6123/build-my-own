@@ -13,8 +13,8 @@ public class NameServiceImpl implements NameService{
     private NameDao nameDao;
 
     @Override
-    public List<Name> showNameByType(String car_type) {
+    public List<Name> showNameByType(String carType) {
 
-        return nameDao.selectNameByType(car_type);
+        return nameDao.selectNameByType(carType);
     }
 }

@@ -4,17 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hyundai.server.model.dao.NameDao">
     <resultMap id="nameMap" type="name">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="car_type" property="car_type"/>
-        <result column="is_new" property="is_new"/>
-        <result column="start_price" property="start_price"/>
-        <result column="car_image" property="car_image"/>
+        <id column="car_name_id" property="id"/>
+        <result column="car_name" property="carName"/>
+        <result column="car_type" property="carType"/>
+        <result column="is_new" property="isNew"/>
+        <result column="start_price" property="startPrice"/>
+        <result column="car_image" property="carImage"/>
     </resultMap>
 
     <select id="selectNameByType" parameterType="String" resultMap="nameMap">
-        SELECT name_id AS id, name, car_type, is_new, start_price, car_image
-        FROM names
+        SELECT car_name_id, car_name, car_type, is_new, start_price, car_image
+        FROM car_names
         WHERE car_type = #{car_type};
     </select>
 </mapper>
