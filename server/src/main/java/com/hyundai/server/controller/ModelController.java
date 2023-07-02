@@ -3,6 +3,7 @@ package com.hyundai.server.controller;
 import com.hyundai.server.common.request.ChangePowertrainReq;
 import com.hyundai.server.common.response.BaseResponseBody;
 import com.hyundai.server.common.response.ChangePowertrainRes;
+import com.hyundai.server.common.response.PowertrainCombinationRes;
 import com.hyundai.server.common.response.PowertrainOptionListRes;
 import com.hyundai.server.model.dto.PowertrainDto;
 import com.hyundai.server.model.service.ModelService;
@@ -55,6 +56,19 @@ public class ModelController {
         } catch (Exception e) {
             return ResponseEntity.status(400)
                     .body(BaseResponseBody.of(400, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/powertrain/list")
+    @ApiImplicitParam(name = "car_name_id", value = "차종 id")
+    public ResponseEntity<? extends BaseResponseBody> showPowertrainCombination(@RequestParam("car_name_id") Integer carNameId) {
+        try{
+            List<PowertrainDto> powertrainCombination = modelService.getPowertrainCombination(carNameId);
+
+            return ResponseEntity.ok(PowertrainCombinationRes.of(200, "success", powertrainCombination));
+        }catch (RuntimeException e){
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
         }
     }
 }
