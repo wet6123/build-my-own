@@ -1,11 +1,10 @@
 package com.hyundai.server.controller;
 
 import com.hyundai.server.common.request.ChangePowertrainReq;
-import com.hyundai.server.common.response.BaseResponseBody;
-import com.hyundai.server.common.response.ChangePowertrainRes;
-import com.hyundai.server.common.response.PowertrainCombinationRes;
-import com.hyundai.server.common.response.PowertrainOptionListRes;
+import com.hyundai.server.common.request.ShowTrimReq;
+import com.hyundai.server.common.response.*;
 import com.hyundai.server.model.dto.PowertrainDto;
+import com.hyundai.server.model.dto.TrimDto;
 import com.hyundai.server.model.service.ModelService;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +68,23 @@ public class ModelController {
         }catch (RuntimeException e){
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/trim")
+//    @ApiImplicitParam(name = "car_name_id", value = "차종 id")
+    public ResponseEntity<? extends BaseResponseBody> showTrimList(ShowTrimReq showTrimReq) {
+        try{
+            List<TrimDto> trims = modelService.getTrimList(showTrimReq.getCarNameId(), showTrimReq.getEngine(), showTrimReq.getTransmission(), showTrimReq.getDrivetrain());
+            if(trims.isEmpty())
+                throw new Exception("주어진 조건에 해당하는 트림이 없습니다.");
+            return ResponseEntity.ok(ShowTrimRes.of(200, "success", trims));
+        } catch (RuntimeException e){
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(400)
+                    .body(BaseResponseBody.of(400, e.getMessage()));
         }
     }
 }
