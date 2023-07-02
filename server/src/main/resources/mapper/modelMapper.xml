@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyundai.server.model.dao.ModelDao">
+    <resultMap id="powertrainMap" type="powertrainDto">
+        <id column="engine" property="engine"/>
+        <result column="transmission" property="transmission"/>
+        <result column="drivetrain" property="drivetrain"/>
+    </resultMap>
+
+    <select id="selectEngine" parameterType="int" resultType="String">
+        SELECT DISTINCT `engine`
+        FROM models
+        JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectTransmission" parameterType="int" resultType="String">
+        SELECT DISTINCT `transmission`
+        FROM models
+        JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectDrivetrain" parameterType="int" resultType="String">
+        SELECT DISTINCT `drivetrain`
+        FROM models
+        JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectPowertrain" parameterType="int" resultMap="powertrainMap">
+        SELECT DISTINCT `engine`, `transmission`, `drivetrain`
+        FROM models
+        JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectTrimByModel" parameterType="hashmap" resultType="String">
+        SELECT DISTINCT trim
+        FROM models
+        JOIN trims ON models.trim_id = trims.trim_id
+        JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE car_name_id = #{car_name_id}
+        <if test="car_name_id != null">
+            AND engine = #{engine}
+        </if>
+        <if test="car_name_id == null">
+            AND engine IS NULL
+        </if>
+        <if test="transmission != null">
+            AND transmission = #{transmission}
+        </if>
+        <if test="transmission == null">
+            AND transmission IS NULL
+        </if>
+        <if test="drivetrain != null">
+            AND drivetrain = #{drivetrain}
+        </if>
+        <if test="drivetrain == null">
+            AND drivetrain IS NULL
+        </if>
+        ;
+    </select>
+</mapper>
