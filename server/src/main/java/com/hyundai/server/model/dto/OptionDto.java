@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OptionDto {
-    private int id;
+    private int optionId;
     private int price;
     private String type;
     private String name;
