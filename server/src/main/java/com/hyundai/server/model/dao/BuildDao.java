@@ -8,8 +8,8 @@ import java.util.List;
 @Repository
 public interface BuildDao {
 //    Color
-    List<OptionDto> selectInteriorByCarName(int carNameId);
-    List<OptionDto> selectExteriorByCarName(int carNameId);
+    List<OptionDto> selectInteriorByCarNameId(int carNameId);
+    List<OptionDto> selectExteriorByCarNameId(int carNameId);
     List<OptionDto> selectInteriorByModelId(int modelId);
     List<OptionDto> selectExteriorByModelId(int modelId);
     List<OptionDto> selectAvailableInterior(int exteriorOptionId);
