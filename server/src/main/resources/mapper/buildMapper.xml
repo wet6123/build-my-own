@@ -65,4 +65,25 @@
         WHERE mo1.option_id = #{optionId}
           AND mo1.model_id = #{modelId};
     </select>
+
+    <select id="selectExclusiveOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN exclusive_options ex1 ON mo1.id = ex1.model_option_id
+                 JOIN exclusive_options ex2 ON ex1.exclusive_group = ex2.exclusive_group AND ex1.id != ex2.id
+                 JOIN model_option mo2 ON ex2.model_option_id = mo2.id
+                 JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
+
+    <select id="selectAvailableOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN required_options ON mo1.id = required_options.required_id
+                 JOIN model_option mo2 ON mo2.id = required_options.model_option_id
+                 JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
 </mapper>
