@@ -19,4 +19,12 @@
         WHERE car_name_id = #{carNameId};
     </select>
 
+
+    <select id="selectExteriorByCarNameId" parameterType="int" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM car_name_exterior
+                 JOIN options ON car_name_exterior.exterior_id = options.option_id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
 </mapper>
