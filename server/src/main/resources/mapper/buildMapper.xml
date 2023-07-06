@@ -15,30 +15,54 @@
     <select id="selectInteriorByCarNameId" parameterType="int" resultMap="optionMap">
         SELECT option_id, option_price, option_type, option_name, option_image, preview
         FROM car_name_interior
-        JOIN options ON car_name_interior.interior_id = options.option_id
+                 JOIN options ON car_name_interior.interior_id = options.option_id
         WHERE car_name_id = #{carNameId};
     </select>
 
     <select id="selectExteriorByCarNameId" parameterType="int" resultMap="optionMap">
         SELECT option_id, option_price, option_type, option_name, option_image, preview
         FROM car_name_exterior
-        JOIN options ON car_name_exterior.exterior_id = options.option_id
+                 JOIN options ON car_name_exterior.exterior_id = options.option_id
         WHERE car_name_id = #{carNameId};
     </select>
 
     <select id="selectInteriorByModelId" parameterType="int" resultMap="optionMap">
         SELECT options.option_id, option_price, option_type, option_name, option_image, preview
         FROM model_option
-        JOIN options ON options.option_type = 'interior' AND model_option.option_id = options.option_id
+                 JOIN options ON options.option_type = 'interior' AND model_option.option_id = options.option_id
         WHERE model_id = #{modelId};
     </select>
 
     <select id="selectExteriorByModelId" parameterType="int" resultMap="optionMap">
         SELECT options.option_id, option_price, option_type, option_name, option_image, preview
         FROM model_option
-        JOIN options ON options.option_type = 'exterior' AND model_option.option_id = options.option_id
+                 JOIN options ON options.option_type = 'exterior' AND model_option.option_id = options.option_id
         WHERE model_id = #{modelId};
     </select>
 
+    <select id="selectAvailableInterior" parameterType="hashmap" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM exterior_interior
+                 JOIN options ON options.option_type = 'interior' AND exterior_interior.interior_id = options.option_id
+        WHERE exterior_id = #{exteriorId}
+          AND car_name_id = #{carNameId};
+    </select>
 
+    <select id="selectAvailableExterior" parameterType="hashmap" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM exterior_interior
+                 JOIN options ON options.option_type = 'exterior' AND exterior_interior.exterior_id = options.option_id
+        WHERE interior_id = #{interiorId}
+          AND car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectRequiredOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN required_options ON mo1.id = required_options.model_option_id
+                 JOIN model_option mo2 ON mo2.id = required_options.required_id
+                 JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
 </mapper>
