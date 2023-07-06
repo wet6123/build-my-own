@@ -19,12 +19,26 @@
         WHERE car_name_id = #{carNameId};
     </select>
 
-
     <select id="selectExteriorByCarNameId" parameterType="int" resultMap="optionMap">
         SELECT option_id, option_price, option_type, option_name, option_image, preview
         FROM car_name_exterior
-                 JOIN options ON car_name_exterior.exterior_id = options.option_id
+        JOIN options ON car_name_exterior.exterior_id = options.option_id
         WHERE car_name_id = #{carNameId};
     </select>
+
+    <select id="selectInteriorByModelId" parameterType="int" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option
+        JOIN options ON options.option_type = 'interior' AND model_option.option_id = options.option_id
+        WHERE model_id = #{modelId};
+    </select>
+
+    <select id="selectExteriorByModelId" parameterType="int" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option
+        JOIN options ON options.option_type = 'exterior' AND model_option.option_id = options.option_id
+        WHERE model_id = #{modelId};
+    </select>
+
 
 </mapper>
