@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hyundai.server.model.dao.ModelDao">
+<mapper namespace="com.hyundai.server.model.dao.BuildDao">
     <resultMap id="optionMap" type="optionDto">
         <id column="option_id" property="optionId"/>
         <result column="option_price" property="price"/>
