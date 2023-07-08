@@ -70,4 +70,18 @@ public class BuildServiceImpl implements BuildService {
         }
         return allInterior;
     }
+
+    @Override
+    public List<OptionDto> getExteriorList(int carNameId, int modelId, int interiorId) {
+        List<OptionDto> allExterior = buildDao.selectExteriorByCarNameId(carNameId);
+        List<OptionDto> modelExterior = buildDao.selectExteriorByModelId(modelId);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("carNameId", carNameId);
+        map.put("interiorId", interiorId);
+        List<OptionDto> interiorExterior = buildDao.selectAvailableExterior(map);
+        for(OptionDto exterior : allExterior) {
+            exterior.setAvailable(modelExterior.contains(exterior) && interiorExterior.contains(exterior));
+        }
+        return allExterior;
+    }
 }
