@@ -1,6 +1,6 @@
 package com.hyundai.server.controller;
 
-import com.hyundai.server.common.request.ChangeModelPreviewReq;
+import com.hyundai.server.common.request.ChangeModelReq;
 import com.hyundai.server.common.request.CheckColorCombinationReq;
 import com.hyundai.server.common.request.ShowExteriorReq;
 import com.hyundai.server.common.request.ShowInteriorReq;
@@ -134,7 +134,7 @@ public class BuildController {
             @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
             @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
     })
-    public ResponseEntity<? extends BaseResponseBody> changeModel(ChangeModelPreviewReq req) {
+    public ResponseEntity<? extends BaseResponseBody> changeModelPreview (ChangeModelReq req) {
         try {
 //            모델 변경시 변경되는 가격
             int price = buildService.getChangeModelPrice(req.getCurrentId(), req.getTargetId(), req.getSelected());
