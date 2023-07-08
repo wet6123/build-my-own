@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ChangeModelPreviewReq {
+public class ChangeModelReq {
     private Integer currentId;
     private Integer targetId;
     private List<Integer> selected;
