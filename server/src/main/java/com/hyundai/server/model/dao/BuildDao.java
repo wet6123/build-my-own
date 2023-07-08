@@ -1,5 +1,6 @@
 package com.hyundai.server.model.dao;
 
+import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface BuildDao {
-    OptionDto selectOptionByOptionId(int optionId);
 //    Color
 //    차종에서 선택 가능한 모든 색상
     List<OptionDto> selectInteriorByCarNameId(int carNameId);
@@ -20,7 +20,11 @@ public interface BuildDao {
 //    interiorId(exteriorId), carNameId
     List<OptionDto> selectAvailableInterior(HashMap<String, Object> map);
     List<OptionDto> selectAvailableExterior(HashMap<String, Object> map);
+//    Model
+    ModelDto selectModelByModelId(int modelId);
+    List<OptionDto> selectAvailableOptionByModelId(int modelId);
 //    Option
+    OptionDto selectOptionByOptionId(int optionId);
 //    optionId, modelId
     List<OptionDto> selectRequiredOption(HashMap<String, Object> map);
     List<OptionDto> selectExclusiveOption(HashMap<String, Object> map);
