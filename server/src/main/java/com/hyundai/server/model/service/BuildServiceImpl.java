@@ -113,4 +113,17 @@ public class BuildServiceImpl implements BuildService {
         }
         return removedOption;
     }
+
+    @Override
+    public List<Integer> getChangeModelRemainOption(int targetId, List<Integer> selected) {
+        List<Integer> result = new ArrayList<>();
+        List<OptionDto> availableOption = buildDao.selectAvailableOptionByModelId(targetId);
+        for(Integer optionId : selected) {
+            OptionDto tmp = buildDao.selectOptionByOptionId(optionId);
+            if(!availableOption.contains(tmp)) {
+                result.add(tmp.getOptionId());
+            }
+        }
+        return result;
+    }
 }

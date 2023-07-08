@@ -13,4 +13,5 @@ public interface BuildService {
     Integer getChangeModelPrice(int currentId, int targetId, List<Integer> selected);
 //    List<OptionDto> getChangeModelAddOption();
     List<OptionDto> getChangeModelRemoveOption(int targetId, List<Integer> selected);
+    List<Integer> getChangeModelRemainOption(int targetId, List<Integer> selected);
 }
