@@ -1,8 +1,10 @@
 package com.hyundai.server.controller;
 
 import com.hyundai.server.common.request.CheckColorCombinationReq;
+import com.hyundai.server.common.request.ShowInteriorReq;
 import com.hyundai.server.common.response.BaseResponseBody;
 import com.hyundai.server.common.response.CheckColorCombinationRes;
+import com.hyundai.server.common.response.ShowInteriorRes;
 import com.hyundai.server.model.dto.OptionDto;
 import com.hyundai.server.model.service.BuildService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -85,4 +87,22 @@ public class BuildController {
         }
     }
 
+    @GetMapping("/interior")
+    @ApiOperation(value = "외장 색상으로 내장 색상 목록 로드", notes = "차종, 외장색상에서 선택 가능한 모든 내장색상(선택 가능 여부), 옵션")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "carNameId", value = "차종 id"),
+            @ApiImplicitParam(name = "modelId", value = "모델 id"),
+            @ApiImplicitParam(name = "exterior", value = "외장 id")
+    })
+    public ResponseEntity<? extends BaseResponseBody> showInterior(ShowInteriorReq req) {
+        try {
+//            모델, 외장에서 선택할 수 있는 내장 옵션
+            List<OptionDto> interiorList = buildService.getInteriorList(req.getCarNameId(), req.getModelId(), req.getExterior());
+
+            return ResponseEntity.ok(ShowInteriorRes.of(200, "success", interiorList));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
 }
