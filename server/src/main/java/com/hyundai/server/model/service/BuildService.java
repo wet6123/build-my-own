@@ -10,4 +10,7 @@ public interface BuildService {
     Boolean isAvailableColorCombination(int carNameId, int interiorId, int exteriorId);
     List<OptionDto> getInteriorList(int carNameId, int modelId, int exteriorId);
     List<OptionDto> getExteriorList(int carNameId, int modelId, int interiorId);
+    Integer getChangeModelPrice(int currentId, int targetId, List<Integer> selected);
+//    List<OptionDto> getChangeModelAddOption();
+    List<OptionDto> getChangeModelRemoveOption(int targetId, List<Integer> selected);
 }

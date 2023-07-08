@@ -5,6 +5,7 @@ import com.hyundai.server.model.dto.OptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,5 +84,33 @@ public class BuildServiceImpl implements BuildService {
             exterior.setAvailable(modelExterior.contains(exterior) && interiorExterior.contains(exterior));
         }
         return allExterior;
+    }
+
+    @Override
+    public Integer getChangeModelPrice(int currentId, int targetId, List<Integer> selected) {
+        int currentModelPrice = buildDao.selectModelByModelId(currentId).getModelPrice();
+        int targetModelPrice = buildDao.selectModelByModelId(targetId).getModelPrice();
+        int removedOptionPrice = 0;
+        List<OptionDto> availableOption = buildDao.selectAvailableOptionByModelId(targetId);
+        for(Integer optionId : selected) {
+            OptionDto tmp = buildDao.selectOptionByOptionId(optionId);
+            if(!availableOption.contains(tmp)) {
+                removedOptionPrice += tmp.getPrice();
+            }
+        }
+        return (targetModelPrice - currentModelPrice - removedOptionPrice);
+    }
+
+    @Override
+    public List<OptionDto> getChangeModelRemoveOption(int targetId, List<Integer> selected) {
+        List<OptionDto> removedOption = new ArrayList<>();
+        List<OptionDto> availableOption = buildDao.selectAvailableOptionByModelId(targetId);
+        for(Integer optionId : selected) {
+            OptionDto tmp = buildDao.selectOptionByOptionId(optionId);
+            if(!availableOption.contains(tmp)) {
+                removedOption.add(tmp);
+            }
+        }
+        return removedOption;
     }
 }
