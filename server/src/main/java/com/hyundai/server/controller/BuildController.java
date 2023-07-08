@@ -1,12 +1,10 @@
 package com.hyundai.server.controller;
 
+import com.hyundai.server.common.request.ChangeModelPreviewReq;
 import com.hyundai.server.common.request.CheckColorCombinationReq;
 import com.hyundai.server.common.request.ShowExteriorReq;
 import com.hyundai.server.common.request.ShowInteriorReq;
-import com.hyundai.server.common.response.BaseResponseBody;
-import com.hyundai.server.common.response.CheckColorCombinationRes;
-import com.hyundai.server.common.response.ShowExteriorRes;
-import com.hyundai.server.common.response.ShowInteriorRes;
+import com.hyundai.server.common.response.*;
 import com.hyundai.server.model.dto.OptionDto;
 import com.hyundai.server.model.service.BuildService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -15,9 +13,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -49,7 +49,7 @@ public class BuildController {
 //            조합으로서 가능한지 확인해야함
             boolean combinationCheck = buildService.isAvailableColorCombination(req.getCarNameId(), req.getInterior(), req.getExterior());
 
-            if(modelCheck && combinationCheck) {
+            if (modelCheck && combinationCheck) {
 //                가능한 조합, 현재 색상 리턴
                 available = true;
                 interiorId = req.getInterior();
@@ -58,7 +58,7 @@ public class BuildController {
 //                모델에서 사용 불가능한 색상, 이전 색상 리턴
                 interiorId = req.getBeforeIn();
                 exteriorId = req.getBeforeEx();
-                if(req.getInterior() != req.getBeforeIn()) {
+                if (req.getInterior() != req.getBeforeIn()) {
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은  트림 변경 후 선택 가능합니다.";
                 } else {
@@ -69,7 +69,7 @@ public class BuildController {
 //                불가능한 조합, 이전 색상 리턴
                 interiorId = req.getBeforeIn();
                 exteriorId = req.getBeforeEx();
-                if(req.getInterior() != req.getBeforeIn()) {
+                if (req.getInterior() != req.getBeforeIn()) {
 //                    사용 불가한 인테리어 선택
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은 선택하신 외장색과 함께 제공되지 않는 색상입니다.\n" +
@@ -121,6 +121,30 @@ public class BuildController {
             List<OptionDto> exteriorList = buildService.getExteriorList(req.getCarNameId(), req.getModelId(), req.getInterior());
 
             return ResponseEntity.ok(ShowExteriorRes.of(200, "success", exteriorList));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/model/preview")
+    @ApiOperation(value = "모델 변경 미리보기", notes = "모델 변경 시 미리보기 모달에서 추가, 삭제 되는 옵션 표기")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+    })
+    public ResponseEntity<? extends BaseResponseBody> changeModel(ChangeModelPreviewReq req) {
+        try {
+//            모델 변경시 변경되는 가격
+            int price = buildService.getChangeModelPrice(req.getCurrentId(), req.getTargetId(), req.getSelected());
+//            모델 변경 시 추가되는 옵션
+//            질문 후에 수정
+            List<OptionDto> add = new ArrayList<>();
+//            모델 변경 시 삭제되는 옵션
+            List<OptionDto> remove = buildService.getChangeModelRemoveOption(req.getTargetId(), req.getSelected());
+
+            return ResponseEntity.ok(ChangeModelPreviewRes.of(200, "success", price, add, remove));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
