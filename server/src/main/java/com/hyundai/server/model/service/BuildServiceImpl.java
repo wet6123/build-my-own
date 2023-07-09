@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -161,6 +162,63 @@ public class BuildServiceImpl implements BuildService {
             }
         }
 
+        return res;
+    }
+
+    @Override
+    public List<Integer> getSelectedOption(Integer modelId, List<Integer> selected, String type, Integer optionId) {
+        List<Integer> res = new ArrayList<>(selected);
+        if (type.equals("add")) {
+//            추가
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionId", optionId);
+            map.put("modelId", modelId);
+            List<OptionDto> requiredOptions = buildDao.selectRequiredOption(map);
+            List<OptionDto> exclusiveOptions = buildDao.selectExclusiveOption(map);
+            for(OptionDto required : requiredOptions) {
+                if(!res.contains(required.getOptionId()))
+                    res.add(required.getOptionId());
+            }
+            for(OptionDto exclusive : exclusiveOptions) {
+                if(res.contains(exclusive.getOptionId()))
+                    res.remove(Integer.valueOf(exclusive.getOptionId()));
+            }
+            res.add(optionId);
+        } else if (type.equals("remove")) {
+//            삭제
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionId", optionId);
+            map.put("modelId", modelId);
+            List<OptionDto> availableOptions = buildDao.selectAvailableOption(map);
+            for(OptionDto available : availableOptions) {
+                res.remove(Integer.valueOf(available.getOptionId()));
+            }
+            res.remove(Integer.valueOf(optionId));
+        }
+//        정렬
+        res.sort(Comparator.naturalOrder());
+        return res;
+    }
+
+    @Override
+    public List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+        List<OptionDto> res = new ArrayList<>();
+        for(Integer after : afterSelected) {
+            if(!beforeSelected.contains(after)) {
+                res.add(buildDao.selectOptionByOptionId(after));
+            }
+        }
+        return res;
+    }
+
+    @Override
+    public List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+        List<OptionDto> res = new ArrayList<>();
+        for(Integer before : beforeSelected) {
+            if(!afterSelected.contains(before)) {
+                res.add(buildDao.selectOptionByOptionId(before));
+            }
+        }
         return res;
     }
 }
