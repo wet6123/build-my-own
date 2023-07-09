@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyundai.server.model.dao.BuildDao">
+    <resultMap id="optionMap" type="optionDto">
+        <id column="option_id" property="optionId"/>
+        <result column="option_price" property="price"/>
+        <result column="option_type" property="type"/>
+        <result column="option_name" property="name"/>
+        <result column="option_image" property="image"/>
+        <result column="preview" property="preview"/>
+    </resultMap>
+
+    <resultMap id="modelMap" type="modelDto">
+        <id column="model_id" property="modelId"/>
+        <result column="car_name_id" property="carNameId"/>
+        <result column="powertrain_id" property="powertrainId"/>
+        <result column="trim_id" property="trimId"/>
+        <result column="model_price" property="modelPrice"/>
+        <result column="model_image" property="modelImage"/>
+        <result column="model_name" property="modelName"/>
+        <result column="displacement" property="displacement"/>
+        <result column="average_mileage" property="averageMileage"/>
+    </resultMap>
+
+    <select id="selectOptionByOptionId" parameterType="int" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM options
+        WHERE option_id = #{optionId};
+    </select>
+
+    <select id="selectInteriorByCarNameId" parameterType="int" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM car_name_interior
+                 JOIN options ON car_name_interior.interior_id = options.option_id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectExteriorByCarNameId" parameterType="int" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM car_name_exterior
+                 JOIN options ON car_name_exterior.exterior_id = options.option_id
+        WHERE car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectInteriorByModelId" parameterType="int" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option
+                 JOIN options ON options.option_type = 'interior' AND model_option.option_id = options.option_id
+        WHERE model_id = #{modelId};
+    </select>
+
+    <select id="selectExteriorByModelId" parameterType="int" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option
+                 JOIN options ON options.option_type = 'exterior' AND model_option.option_id = options.option_id
+        WHERE model_id = #{modelId};
+    </select>
+
+    <select id="selectAvailableInterior" parameterType="hashmap" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM exterior_interior
+                 JOIN options ON options.option_type = 'interior' AND exterior_interior.interior_id = options.option_id
+        WHERE exterior_id = #{exteriorId}
+          AND car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectAvailableExterior" parameterType="hashmap" resultMap="optionMap">
+        SELECT option_id, option_price, option_type, option_name, option_image, preview
+        FROM exterior_interior
+                 JOIN options ON options.option_type = 'exterior' AND exterior_interior.exterior_id = options.option_id
+        WHERE interior_id = #{interiorId}
+          AND car_name_id = #{carNameId};
+    </select>
+
+    <select id="selectModelByModelId" parameterType="int" resultMap="modelMap">
+        SELECT model_id, car_name_id, powertrain_id, trim_id, model_price, model_image, model_name, displacement, average_mileage
+        FROM models
+        WHERE model_id = #{modelId};
+    </select>
+
+    <select id="selectAvailableOptionByModelId" parameterType="int" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option
+                 JOIN options ON model_option.option_id = options.option_id
+        WHERE model_id = #{model_id} AND option_type != 'exterior' AND option_type != 'interior';
+    </select>
+
+    <select id="selectRequiredOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN required_options ON mo1.id = required_options.model_option_id
+                 JOIN model_option mo2 ON mo2.id = required_options.required_id
+                 JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
+
+    <select id="selectExclusiveOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN exclusive_options ex1 ON mo1.id = ex1.model_option_id
+                 JOIN exclusive_options ex2 ON ex1.exclusive_group = ex2.exclusive_group AND ex1.id != ex2.id
+                 JOIN model_option mo2
+        ON ex2.model_option_id = mo2.id
+            JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
+
+    <select id="selectAvailableOption" parameterType="map" resultMap="optionMap">
+        SELECT options.option_id, option_price, option_type, option_name, option_image, preview
+        FROM model_option mo1
+                 JOIN required_options ON mo1.id = required_options.required_id
+                 JOIN model_option mo2 ON mo2.id = required_options.model_option_id
+                 JOIN options ON mo2.option_id = options.option_id
+        WHERE mo1.option_id = #{optionId}
+          AND mo1.model_id = #{modelId};
+    </select>
+</mapper>
