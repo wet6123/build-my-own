@@ -14,7 +14,7 @@ public class ModelDto {
     private int trimId;
     private int modelPrice;
     private String modelImage;
-    private String detail;
+    private String modelName;
     private int displacement;
-    private int averageMileage;
+    private float averageMileage;
 }
