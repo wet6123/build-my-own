@@ -1,6 +1,7 @@
 package com.hyundai.server.model.service;
 
 import com.hyundai.server.model.dao.BuildDao;
+import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -220,5 +221,10 @@ public class BuildServiceImpl implements BuildService {
             }
         }
         return res;
+    }
+
+    @Override
+    public ModelDto getModelInfo(Integer modelId) {
+        return buildDao.selectModelByModelId(modelId);
     }
 }
