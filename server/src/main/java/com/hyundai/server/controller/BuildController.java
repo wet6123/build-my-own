@@ -150,4 +150,25 @@ public class BuildController {
                     .body(BaseResponseBody.of(500, e.getMessage()));
         }
     }
+
+    @PostMapping("/model")
+    @ApiOperation(value = "모델 변경", notes = "모델 변경 시 유지되는 옵션, 선택 가능한 옵션 목록록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+    })
+    public ResponseEntity<? extends BaseResponseBody> changeModel(ChangeModelReq req) {
+        try {
+//            모델 변경 후 유지되는 옵션
+            List<Integer> selected = buildService.getChangeModelRemainOption(req.getTargetId(), req.getSelected());
+//            모델 변경 후 옵션 리스트
+            List<OptionDto> options = buildService.getChangeModelOptionList(req.getTargetId(), req.getSelected());
+
+            return ResponseEntity.ok(ChangeModelRes.of(200, "success", selected, options));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
 }
