@@ -1,9 +1,6 @@
 package com.hyundai.server.controller;
 
-import com.hyundai.server.common.request.ChangeModelReq;
-import com.hyundai.server.common.request.CheckColorCombinationReq;
-import com.hyundai.server.common.request.ShowExteriorReq;
-import com.hyundai.server.common.request.ShowInteriorReq;
+import com.hyundai.server.common.request.*;
 import com.hyundai.server.common.response.*;
 import com.hyundai.server.model.dto.OptionDto;
 import com.hyundai.server.model.service.BuildService;
@@ -152,7 +149,7 @@ public class BuildController {
     }
 
     @PostMapping("/model")
-    @ApiOperation(value = "모델 변경", notes = "모델 변경 시 유지되는 옵션, 선택 가능한 옵션 목록록")
+    @ApiOperation(value = "모델 변경", notes = "모델 변경 시 유지되는 옵션, 선택 가능한 옵션 목록")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
             @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
@@ -169,6 +166,38 @@ public class BuildController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/option")
+    @ApiOperation(value = "옵션 목록", notes = "선택된 옵션에 따라서 결과 출력")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "modelId", value = "현재 모델 id"),
+            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트"),
+            @ApiImplicitParam(name = "type", value = "add/remove 동작 타입"),
+            @ApiImplicitParam(name = "optionId", value = "옵션 id")
+    })
+    public ResponseEntity<? extends BaseResponseBody> showOptionList(ShowOptionListReq req) {
+        try {
+            if(!(req.getType().equals("add")||req.getType().equals("remove")))
+                throw new Exception("type이 잘못 입력되었습니다.");
+
+//            선택된 옵션 리스트 (옵션 추가/삭제 후)
+            List<Integer> selected = buildService.getSelectedOption(req.getModelId(), req.getSelected(), req.getType(), req.getOptionId());
+//            화면에 보여줄 옵션 리스트 선택 가능/불가 표기
+            List<OptionDto> options = buildService.getChangeModelOptionList(req.getModelId(), selected);
+//            모달 - 선택 시 추가되는 옵션
+            List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected, req.getType());
+//            모달 - 선택 시 삭제되는 옵션
+            List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected, req.getType());
+
+            return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(400)
+                    .body(BaseResponseBody.of(400, e.getMessage()));
         }
     }
 }
