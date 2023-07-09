@@ -126,4 +126,41 @@ public class BuildServiceImpl implements BuildService {
         }
         return result;
     }
+
+    @Override
+    public List<OptionDto> getChangeModelOptionList(int targetId, List<Integer> selected) {
+//        모델에서 사용 가능한 옵션 로드
+        List<OptionDto> res = buildDao.selectAvailableOptionByModelId(targetId);
+//        선행 조건이 없으면 사용 가능한 것으로 표기
+        for(OptionDto option : res) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionId", option.getOptionId());
+            map.put("modelId", targetId);
+            option.setAvailable(buildDao.selectRequiredOption(map).size() == 0);
+        }
+//        이미 선택된 옵션에 따라서 선택 가능한 옵션 표기
+        for(Integer optionId : selected) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("optionId", optionId);
+            map.put("modelId", targetId);
+            List<OptionDto> avaialbleOptionList = buildDao.selectAvailableOption(map);
+            for(OptionDto option : avaialbleOptionList) {
+                for(OptionDto resOption : res) {
+                    if(option.getOptionId() == resOption.getOptionId())
+                        resOption.setAvailable(true);
+                }
+            }
+
+//        이미 선택한 옵션에 따라서 선택 불가능한 옵션 표기
+            List<OptionDto> exclusiveOptionList = buildDao.selectExclusiveOption(map);
+            for(OptionDto option : exclusiveOptionList) {
+                for(OptionDto resOption : res) {
+                    if(option.getOptionId() == resOption.getOptionId())
+                        resOption.setAvailable(false);
+                }
+            }
+        }
+
+        return res;
+    }
 }
