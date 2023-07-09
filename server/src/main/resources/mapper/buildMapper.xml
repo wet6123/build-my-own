@@ -19,7 +19,7 @@
         <result column="trim_id" property="trimId"/>
         <result column="model_price" property="modelPrice"/>
         <result column="model_image" property="modelImage"/>
-        <result column="detail" property="detail"/>
+        <result column="model_name" property="modelName"/>
         <result column="displacement" property="displacement"/>
         <result column="average_mileage" property="averageMileage"/>
     </resultMap>
@@ -75,7 +75,7 @@
     </select>
 
     <select id="selectModelByModelId" parameterType="int" resultMap="modelMap">
-        SELECT model_id, car_name_id, powertrain_id, trim_id, model_price, model_image, detail, displacement, average_mileage
+        SELECT model_id, car_name_id, powertrain_id, trim_id, model_price, model_image, model_name, displacement, average_mileage
         FROM models
         WHERE model_id = #{modelId};
     </select>
