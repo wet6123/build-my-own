@@ -227,4 +227,9 @@ public class BuildServiceImpl implements BuildService {
     public ModelDto getModelInfo(Integer modelId) {
         return buildDao.selectModelByModelId(modelId);
     }
+
+    @Override
+    public OptionDto getOptionInfo(Integer optionId) {
+        return buildDao.selectOptionByOptionId(optionId);
+    }
 }

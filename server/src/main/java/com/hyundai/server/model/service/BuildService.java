@@ -20,4 +20,5 @@ public interface BuildService {
     List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type);
     List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type);
     ModelDto getModelInfo(Integer modelId);
+    OptionDto getOptionInfo(Integer optionId);
 }
