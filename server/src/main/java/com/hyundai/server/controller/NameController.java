@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/names")
+@RequestMapping("api/names")
 public class NameController {
 
     @Autowired
