@@ -6,7 +6,6 @@ import api from '../api/api';
 const fetchCarNameList: any = createAsyncThunk('fetchCarNameList', async (carType: string, { rejectWithValue }) => {
   try {
     const res = await instance.get(api.fetchCarNameList(carType), {});
-    console.log(res.data);
     return res.data;
   } catch (err: any) {
     return rejectWithValue(err.respopnse.data);

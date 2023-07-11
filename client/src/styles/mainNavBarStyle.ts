@@ -45,5 +45,3 @@ export const RightMenu = styled.div`
   min-width: 250px;
   width: 30%;
 `;
-
-export const MenuTile = styled.div``;

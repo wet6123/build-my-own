@@ -25,6 +25,7 @@ export const Phrases = styled.div`
   right: 0;
   width: 1260px;
   height: auto;
+  z-index: -1;
   text-align: left;
   margin: 0 auto;
 `;

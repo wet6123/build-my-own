@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as nav from '../../styles/mainNavBarStyle';
+import { DropdownMenu } from './DropdownMenu';
 
 const MenuList = [
   {
@@ -47,6 +49,11 @@ const MenuList = [
 ];
 
 export function MainNavBar() {
+  const [hover, setHover] = useState<String>('');
+  const close = () => {
+    setHover('');
+  };
+
   return (
     <nav.Haeder>
       <nav.Wrapper>
@@ -60,12 +67,22 @@ export function MainNavBar() {
             {MenuList.map((menu: any) => {
               if (menu.showImg) {
                 return (
-                  <Link to={menu.target}>
-                    <img src={menu.imgLink} alt="Shop" />
-                  </Link>
+                  <>
+                    <Link to={menu.target} onMouseOver={() => setHover(menu.name)}>
+                      <img src={menu.imgLink} alt="Shop" />
+                    </Link>
+                    {hover == menu.name ? <DropdownMenu name={menu.name} close={() => close()} /> : null}
+                  </>
                 );
               }
-              return <Link to={menu.target}>{menu.name}</Link>;
+              return (
+                <>
+                  <Link to={menu.target} onMouseOver={() => setHover(menu.name)}>
+                    {menu.name}
+                  </Link>
+                  {hover == menu.name ? <DropdownMenu name={menu.name} close={() => close()} /> : null}
+                </>
+              );
             })}
           </nav.LeftMenu>
           <nav.RightMenu>right menu</nav.RightMenu>
