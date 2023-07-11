@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/build")
+@CrossOrigin("http://localhost:3000")
 public class BuildController {
 
     @Autowired
