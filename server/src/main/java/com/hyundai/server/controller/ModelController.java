@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/models")
+@CrossOrigin("http://localhost:3000")
 public class ModelController {
 
     @Autowired
