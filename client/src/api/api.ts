@@ -24,7 +24,7 @@ const api = {
   // build
   // model
   // name
-  getCarNames: (type: number) => NAMES_URL + `?type=${type}`,
+  fetchCarNameList: (carType: string) => NAMES_URL + `?type=${carType}`,
 };
 
 export default api;
