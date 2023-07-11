@@ -1,35 +1,24 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCarNameList } from '../slice/carNameSlice';
-
-function Test({ carName, startPrice }: any) {
-  return (
-    <>
-      <span>{carName}</span>
-      <span>{startPrice}</span>
-    </>
-  );
-}
+import { MainNavBar } from '../components/main/MainNavBar';
+import * as main from '../styles/mainPageStyle';
 
 export function MainPage() {
-  const dispatch = useDispatch();
-  const carNameList = useSelector((state: any) => state.carName.carNameList);
-  const getCarNameList = () => {
-    dispatch(fetchCarNameList('승용'));
-    console.log(carNameList);
-  };
-
   return (
     <>
-      <h1>main page 입니다.</h1>
-      <button onClick={getCarNameList} type="button">
-        불러오기
-      </button>
-      {carNameList &&
-        carNameList.map((test: any, idx: any) => (
-          <div>
-            <Test carName={test.carName} startPrice={test.startPrice} />
-          </div>
-        ))}
+      <MainNavBar />
+      <main.Background>
+        <main.Poster>
+          <main.Phrases>
+            <main.CarName>PALISADE</main.CarName>
+            <main.Sub>당신의 모든 세상</main.Sub>
+          </main.Phrases>
+          <main.ImgBox>
+            <main.CarImg
+              src="https://build-my-own.s3.ap-northeast-2.amazonaws.com/img/main/main-palisade-24my-w.png"
+              alt="main-car-img"
+            />
+          </main.ImgBox>
+        </main.Poster>
+      </main.Background>
     </>
   );
 }
