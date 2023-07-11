@@ -49,7 +49,7 @@ const MenuList = [
 export function MainNavBar() {
   return (
     <nav.Haeder>
-      <nav.Nav>
+      <nav.Wrapper>
         <div>
           <Link to="/">
             <nav.Logo src="https://build-my-own.s3.ap-northeast-2.amazonaws.com/img/main/hyundai-Logo.png" alt="Logo" />
@@ -70,7 +70,7 @@ export function MainNavBar() {
           </nav.LeftMenu>
           <nav.RightMenu>right menu</nav.RightMenu>
         </nav.Menu>
-      </nav.Nav>
+      </nav.Wrapper>
     </nav.Haeder>
   );
 }

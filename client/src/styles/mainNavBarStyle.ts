@@ -8,10 +8,13 @@ export const Haeder = styled.div`
   width: 100%;
 `;
 
-export const Nav = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
   height: 80px;
+  max-width: 1400px;
 `;
 
 export const Logo = styled.img`
