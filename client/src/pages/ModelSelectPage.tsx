@@ -5,7 +5,7 @@ import { PowertrainSelect } from '../components/buildModel/PowertrainSelect';
 export function ModelSelectPage() {
   return (
     <>
-      {/* <BuildNavBar /> */}
+      <BuildNavBar />
       <div>
         <PowertrainSelect />
         <ModelList />

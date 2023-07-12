@@ -5,7 +5,7 @@ import { AppDispatch, StateType } from '../../store/store';
 import { fetchTrimList } from '../../slice/modelSlice';
 import { Trim } from '../../types/sliceType';
 import { TrimTile } from './TrimTile';
-import * as style from '../../styles/buildModel/modelListStyle';
+import * as style from '../../styles/buildModel/trimListStyle';
 
 export function ModelList() {
   const location = useLocation();

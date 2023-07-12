@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
-import * as model from '../../styles/buildModel/modelSelectPageStyle';
+import * as model from '../../styles/buildModel/powertrainSelectPageStyle';
 import { changePowertrain, fetchPowertrainList } from '../../slice/modelSlice';
 import { AppDispatch, StateType } from '../../store/store';
 import { PowertrainTile } from './PowertrainTile';
