@@ -23,6 +23,10 @@ const TRIM_URL = '/trim';
 const api = {
   // build
   // model
+  fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
+  changePowertrain: () => MODELS_URL + POWERTRAIN_URL,
+  fetchPowertrainCombination: (carNameId: number) => MODELS_URL + POWERTRAIN_LIST_URL + `?car_name_id=${carNameId}`,
+  fetchTrimList: () => MODELS_URL + TRIM_URL,
   // name
   fetchCarNameList: (carType: string) => NAMES_URL + `?type=${carType}`,
 };
