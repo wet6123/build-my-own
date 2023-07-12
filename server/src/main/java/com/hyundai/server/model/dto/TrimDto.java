@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrimDto {
-    private int modelTd;
-    private String tirm;
+    private int modelId;
+    private String trim;
     private int price;
     private String image;
     private String detail1;

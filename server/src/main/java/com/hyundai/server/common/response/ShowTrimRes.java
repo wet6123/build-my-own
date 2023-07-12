@@ -9,13 +9,13 @@ import java.util.List;
 @Getter
 @Setter
 public class ShowTrimRes extends BaseResponseBody {
-    private List<TrimDto> trims;
+    private List<TrimDto> trimList;
 
     public static ShowTrimRes of(Integer statusCode, String message, List<TrimDto> trims) {
         ShowTrimRes res = new ShowTrimRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setTrims(trims);
+        res.setTrimList(trims);
         return res;
     }
 }
