@@ -46,7 +46,7 @@ const ModelList = [
 
 export function DropdownMenu({ name, close }: any) {
   const dispatch = useDispatch();
-  const [carType, setCarType] = useState<String>('수소/전기차');
+  const [carType, setCarType] = useState<string>('수소/전기차');
   const carNameList = useSelector((state: any) => state.carName.carNameList);
   useEffect(() => {
     dispatch(fetchCarNameList(carType));
@@ -70,7 +70,8 @@ export function DropdownMenu({ name, close }: any) {
                           {carNameList &&
                             carNameList.map((carName: any, idx: any) => (
                               <MainCarType
-                                carName={carName.carName}
+                                car={carName}
+                                name={carName.carName}
                                 startPrice={carName.startPrice}
                                 carImg={carName.carImage}
                               />

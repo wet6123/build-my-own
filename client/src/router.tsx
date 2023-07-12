@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { MainPage } from './pages/MainPage';
+import { ModelSelectPage } from './pages/ModelSelectPage';
 
 const routerData = [
   {
@@ -7,6 +8,13 @@ const routerData = [
     path: '/',
     lable: 'MainPage',
     element: <MainPage />,
+    withAuth: false,
+  },
+  {
+    id: 1,
+    path: '/build/model',
+    lable: 'ModelSelectPage',
+    element: <ModelSelectPage />,
     withAuth: false,
   },
 ];
@@ -19,11 +27,10 @@ export const routers = createBrowserRouter(
         // authCheck
         element: router.element,
       };
-    } 
-      return {
-        path: router.path,
-        element: router.element,
-      };
-    
+    }
+    return {
+      path: router.path,
+      element: router.element,
+    };
   }),
 );
