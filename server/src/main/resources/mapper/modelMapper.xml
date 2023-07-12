@@ -17,6 +17,9 @@
         <result column="detail_1" property="detail1"/>
         <result column="detail_2" property="detail2"/>
         <result column="detail_3" property="detail3"/>
+        <result column="engine" property="engine"/>
+        <result column="transmission" property="transmission"/>
+        <result column="drivetrain" property="drivetrain"/>
     </resultMap>
 
     <select id="selectEngine" parameterType="int" resultType="String">
@@ -48,7 +51,7 @@
     </select>
 
     <select id="selectTrimByModel" parameterType="hashmap" resultMap="trimMap">
-        SELECT DISTINCT `model_id`, `trim`, `model_price`, `model_image`, `detail_1`, `detail_2`, `detail_3`
+        SELECT DISTINCT `model_id`, `trim`, `model_price`, `model_image`, `detail_1`, `detail_2`, `detail_3`, `engine`, `transmission`, `drivetrain`
         FROM models
         JOIN trims ON models.trim_id = trims.trim_id
         JOIN powertrain ON models.powertrain_id = powertrain.id

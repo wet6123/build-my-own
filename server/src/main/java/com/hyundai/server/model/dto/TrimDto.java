@@ -15,4 +15,7 @@ public class TrimDto {
     private String detail1;
     private String detail2;
     private String detail3;
+    private String engine;
+    private String transmission;
+    private String drivetrain;
 }
