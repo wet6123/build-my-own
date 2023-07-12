@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { instance } from '../api/axiosInstance';
 import api from '../api/api';
-import { AxiosResponseError, Powertrain, PowertrainList } from '../types/sliceType';
-import { ChangePowertrainReq } from '../types/modelSliceThunkType';
+import { AxiosResponseError, Powertrain, PowertrainList, Trim } from '../types/sliceType';
+import { ChangePowertrainReq, FetchTrimReq } from '../types/modelSliceThunkType';
 
 const fetchPowertrainList = createAsyncThunk('fetchPowertrainList', async (carNameId: number, { rejectWithValue }) => {
   try {
@@ -40,15 +40,18 @@ const fetchPowertrainCombination = createAsyncThunk(
   },
 );
 
-const fetchTrimList = createAsyncThunk('fetchTrimList', async (payload, { rejectWithValue }) => {
-  try {
-    const res = await instance.post(api.fetchTrimList(), payload, {});
-    console.log(res.data);
-    return res.data;
-  } catch (err: any) {
-    return rejectWithValue(err.response.data);
-  }
-});
+const fetchTrimList = createAsyncThunk<{ trimList: Array<Trim> }, FetchTrimReq, { rejectValue: AxiosResponseError }>(
+  'fetchTrimList',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.post(api.fetchTrimList(), payload, {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
 
 export interface PowertrainState {
   loading: boolean;
@@ -56,7 +59,7 @@ export interface PowertrainState {
   powertrainList: PowertrainList;
   powertrain: Powertrain;
   powertrainCombination: Array<Powertrain>;
-  trimList: Array<string>;
+  trimList: Array<Trim>;
 }
 
 const initialState: PowertrainState = {
@@ -124,7 +127,7 @@ export const PowertarinSlice = createSlice({
       .addCase(fetchTrimList.fulfilled, (state, action) => {
         state.loading = false;
         state.error = '';
-        state.trimList = action.payload;
+        state.trimList = action.payload.trimList;
       })
       .addCase(fetchTrimList.rejected, (state, action) => {
         state.loading = false;

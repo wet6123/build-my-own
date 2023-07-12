@@ -19,6 +19,19 @@ export interface Powertrain {
   drivetrain: string;
 }
 
+export interface Trim {
+  modelId: number;
+  trim: string;
+  price: number;
+  image: string;
+  detail1: string;
+  detail2: string;
+  detail3: string;
+  engine: string;
+  transmission: string;
+  drivetrain: string;
+}
+
 export interface AxiosResponseError {
   data: string;
   statusCode: number;

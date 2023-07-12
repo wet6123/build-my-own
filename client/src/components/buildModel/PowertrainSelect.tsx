@@ -13,6 +13,7 @@ export function PowertrainSelect() {
   const dispatch = useDispatch<AppDispatch>();
   const powertrainList = useSelector((state: StateType) => state.powertrain.powertrainList);
   const powertrain = useSelector((state: StateType) => state.powertrain.powertrain);
+
   useEffect(() => {
     dispatch(fetchPowertrainList(id));
 
@@ -22,6 +23,7 @@ export function PowertrainSelect() {
       transmission: null,
       drivetrain: null,
     };
+
     dispatch(changePowertrain(carNamePayload));
   }, [id]);
 
@@ -31,7 +33,9 @@ export function PowertrainSelect() {
         <div>엔진</div>
         <model.PowertrainTileWrapper>
           {powertrainList.engine.length > 0 &&
-            powertrainList.engine.map(engine => <PowertrainTile name={engine} value={powertrain.engine} />)}
+            powertrainList.engine.map(engine => (
+              <PowertrainTile name={engine} value={powertrain.engine} type="engine" />
+            ))}
         </model.PowertrainTileWrapper>
       </model.PowertrainSelector>
       <model.PowertrainSelector>
@@ -40,7 +44,7 @@ export function PowertrainSelect() {
             <div>변속기</div>
             <model.PowertrainTileWrapper>
               {powertrainList.transmission.map(transmission => (
-                <PowertrainTile name={transmission} value={powertrain.transmission} />
+                <PowertrainTile name={transmission} value={powertrain.transmission} type="transmission" />
               ))}
             </model.PowertrainTileWrapper>
           </>
@@ -52,7 +56,7 @@ export function PowertrainSelect() {
             <div>구동방식</div>
             <model.PowertrainTileWrapper>
               {powertrainList.drivetrain.map(transmission => (
-                <PowertrainTile name={transmission} value={powertrain.drivetrain} />
+                <PowertrainTile name={transmission} value={powertrain.drivetrain} type="drivetrain" />
               ))}
             </model.PowertrainTileWrapper>
           </>

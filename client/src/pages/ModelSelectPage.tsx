@@ -1,4 +1,5 @@
 import { BuildNavBar } from '../components/buildModel/BuildNavBar';
+import { ModelList } from '../components/buildModel/ModelList';
 import { PowertrainSelect } from '../components/buildModel/PowertrainSelect';
 
 export function ModelSelectPage() {
@@ -7,7 +8,7 @@ export function ModelSelectPage() {
       {/* <BuildNavBar /> */}
       <div>
         <PowertrainSelect />
-        <div>모델</div>
+        <ModelList />
       </div>
     </>
   );
