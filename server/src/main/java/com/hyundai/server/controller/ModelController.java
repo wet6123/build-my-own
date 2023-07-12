@@ -41,12 +41,7 @@ public class ModelController {
 
     @PostMapping("/powertrain")
     @ApiOperation(value = "파워트레인 변경", notes = "파워트레인 옵션을 변경하려할 때 선택 가능한 결과를 찾아서 출력합니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "carNameId", value = "차종 id"),
-            @ApiImplicitParam(name = "engine", value = "엔진 이름"),
-            @ApiImplicitParam(name = "transmission", value = "변속기 이름"),
-            @ApiImplicitParam(name = "drivetrain", value = "구동방식 이름")
-    })    public ResponseEntity<? extends BaseResponseBody> changePowertrain(ChangePowertrainReq changePowertrainReq) {
+    public ResponseEntity<? extends BaseResponseBody> changePowertrain(@RequestBody ChangePowertrainReq changePowertrainReq) {
         try {
 //            carNameId가 null이면 에러
             if (changePowertrainReq.getCarNameId() == null)
@@ -83,13 +78,7 @@ public class ModelController {
 
     @PostMapping("/trim")
     @ApiOperation(value = "선택 가능 트림 출력", notes = "모델에서 선택 가능한 트림을 모두 출력합니다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "carNameId", value = "차종 id"),
-            @ApiImplicitParam(name = "engine", value = "엔진 이름"),
-            @ApiImplicitParam(name = "transmission", value = "변속기 이름"),
-            @ApiImplicitParam(name = "drivetrain", value = "구동방식 이름")
-    })
-    public ResponseEntity<? extends BaseResponseBody> showTrimList(ShowTrimReq showTrimReq) {
+    public ResponseEntity<? extends BaseResponseBody> showTrimList(@RequestBody ShowTrimReq showTrimReq) {
         try {
             List<TrimDto> trims = modelService.getTrimList(showTrimReq.getCarNameId(), showTrimReq.getEngine(), showTrimReq.getTransmission(), showTrimReq.getDrivetrain());
             if (trims.isEmpty())
