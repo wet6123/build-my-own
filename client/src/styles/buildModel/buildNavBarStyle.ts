@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 export const Header = styled.div`
+  position: relative;
   height: 139px;
   width: 100%;
   background: #e4dcd3;
@@ -27,8 +28,8 @@ export const Logo = styled.img`
   max-height: 50px;
 `;
 
+// 수정 (분리할것) - BuildDropdown
 export const DropDown = styled.div`
-  display: none;
   position: absolute;
   z-index: 99;
   top: 81px;
@@ -39,10 +40,44 @@ export const DropDown = styled.div`
   overflow: hidden;
 `;
 
+export const TileWrapper = styled.div`
+  margin-top: 61px;
+`;
+
+export const CarTypeBtn = styled.button<{ selected: boolean }>`
+  color: ${props => (props.selected ? '#444' : '#fff')};
+  background: ${props => (props.selected ? '#fff' : '#444')};
+  line-height: 22px;
+  font-weight: 500;
+  font-size: 15px;
+  width: 140px;
+  height: 40px;
+  padding: 0 20px;
+`;
+
 // under
 export const UnderHeader = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 78px;
+  padding: 0 50px;
+`;
+
+export const BuildNavWrapper = styled.ul`
+  position: absolute;
+  bottom: 0;
+  left: 50px;
+  height: auto;
+`;
+
+export const BuildNavMenu = styled.li`
+  display: inline-block;
+  font-weight: 400;
+  font-size: 20px;
+  height: 49px;
+`;
+export const BuildNavBtn = styled.div`
+  width: 180px;
 `;

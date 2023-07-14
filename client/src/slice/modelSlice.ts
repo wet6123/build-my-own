@@ -60,6 +60,7 @@ export interface PowertrainState {
   powertrain: Powertrain;
   powertrainCombination: Array<Powertrain>;
   trimList: Array<Trim>;
+  showBuildDropdown: boolean;
 }
 
 const initialState: PowertrainState = {
@@ -77,12 +78,17 @@ const initialState: PowertrainState = {
   },
   powertrainCombination: [],
   trimList: [],
+  showBuildDropdown: false,
 };
 
 export const PowertarinSlice = createSlice({
   name: 'powertrain',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleBuildDropdown: state => {
+      state.showBuildDropdown = !state.showBuildDropdown;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchPowertrainList.pending, (state, action) => {
@@ -138,6 +144,6 @@ export const PowertarinSlice = createSlice({
 
 export { fetchPowertrainList, changePowertrain, fetchPowertrainCombination, fetchTrimList };
 
-export const {} = PowertarinSlice.actions;
+export const { toggleBuildDropdown } = PowertarinSlice.actions;
 
 export default PowertarinSlice.reducer;

@@ -7,7 +7,7 @@ import { Trim } from '../../types/sliceType';
 import { TrimTile } from './TrimTile';
 import * as style from '../../styles/buildModel/trimListStyle';
 
-export function ModelList() {
+export function TrimSelect() {
   const location = useLocation();
   const { id } = location.state;
 
