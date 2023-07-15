@@ -31,7 +31,7 @@ export const Logo = styled.img`
 // 수정 (분리할것) - BuildDropdown
 export const DropDown = styled.div`
   position: absolute;
-  z-index: 99;
+  z-index: 90;
   top: 81px;
   width: 100%;
   height: 340px;

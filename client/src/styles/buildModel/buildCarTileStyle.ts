@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 export const Tile = styled.div`
@@ -12,7 +11,7 @@ export const Tile = styled.div`
   }
 `;
 
-export const LinkTag = styled(Link)`
+export const TileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
