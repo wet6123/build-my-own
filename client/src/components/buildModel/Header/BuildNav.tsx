@@ -6,7 +6,7 @@ import * as style from '../../../styles/buildModel/buildNavBarStyle';
 function message() {
   return (
     <>
-      <div> 모델선택 화면으로 이동하시겠습니까?</div>
+      <div>모델선택 화면으로 이동하시겠습니까?</div>
       <div>현재까지의 변경사항은 저장되지 않습니다.</div>
     </>
   );
