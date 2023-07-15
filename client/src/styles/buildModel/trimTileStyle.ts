@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 export const TrimTile = styled.div`
@@ -55,7 +56,9 @@ export const TrimDetailImg = styled.img`
   width: 30%;
 `;
 
-export const BuildBtn = styled.button`
+export const BuildBtn = styled(Link)`
+  text-align: center;
+  line-height: 50px;
   background: #002c5f;
   color: #fff;
   height: 50px;

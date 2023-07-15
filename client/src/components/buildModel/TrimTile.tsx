@@ -1,14 +1,22 @@
+import { Link, useSearchParams } from 'react-router-dom';
 import { Trim } from '../../types/sliceType';
 import * as style from '../../styles/buildModel/trimTileStyle';
 
 export function TrimTile({ trimObj }: { trimObj: Trim }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get('id');
+  const name = searchParams.get('name');
+  const toOptionLink = `/build/option?id=${id}&name=${name}&modelId=${trimObj.modelId}`;
+
   return (
     <style.TrimTile>
       <div>
         <style.TrimName>{trimObj.trim}</style.TrimName>
         <style.TrimPrice>{trimObj.price.toLocaleString('ko-KR')} 원</style.TrimPrice>
         <div>
-          <style.TrimImg src={trimObj.image} alt="carImg" />
+          <Link to={toOptionLink}>
+            <style.TrimImg src={trimObj.image} alt="carImg" />
+          </Link>
         </div>
         <style.TrimPowertrain>
           {trimObj.engine} {trimObj.transmission} {trimObj.drivetrain}
@@ -19,7 +27,7 @@ export function TrimTile({ trimObj }: { trimObj: Trim }) {
           <style.TrimDetailImg src={trimObj.detail3} alt="detail_3" />
         </style.TrimDetailList>
       </div>
-      <style.BuildBtn type="button">내 차 만들기</style.BuildBtn>
+      <style.BuildBtn to={toOptionLink}>내 차 만들기</style.BuildBtn>
     </style.TrimTile>
   );
 }
