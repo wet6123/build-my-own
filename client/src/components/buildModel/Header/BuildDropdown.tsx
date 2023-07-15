@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { carTypeList } from '../../utils/menu/carTypeList';
-import { fetchCarNameList } from '../../slice/carNameSlice';
+import { carTypeList } from '../../../utils/menu/carTypeList';
+import { fetchCarNameList } from '../../../slice/carNameSlice';
 import { BuildCarTile } from './BuildCarTile';
-import * as style from '../../styles/buildModel/buildNavBarStyle';
+import * as style from '../../../styles/buildModel/buildNavBarStyle';
 
 export function BuildDropdown() {
   const dispatch = useDispatch();

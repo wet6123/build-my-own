@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { BuildDropdown } from './BuildDropdown';
-import { toggleBuildDropdown } from '../../slice/modelSlice';
-import * as style from '../../styles/buildModel/buildNavBarStyle';
+import { toggleBuildDropdown } from '../../../slice/modelSlice';
+import { BuildNav } from './BuildNav';
+import * as style from '../../../styles/buildModel/buildNavBarStyle';
 
 export function BuildHeader() {
   const location = useLocation();
-  const { id, name } = location.state;
+  const { name } = location.state;
 
   const dispatch = useDispatch();
   const showDropdown = useSelector((state: any) => state.powertrain.showBuildDropdown);
@@ -39,10 +40,7 @@ export function BuildHeader() {
           <div>exit</div>
         </style.UpperHeader>
         <style.UnderHeader>
-          <style.BuildNavWrapper>
-            <style.BuildNavMenu>01. 모델 선택</style.BuildNavMenu>
-            <style.BuildNavMenu>02. 내 차 만들기</style.BuildNavMenu>
-          </style.BuildNavWrapper>
+          <BuildNav />
         </style.UnderHeader>
       </style.Header>
       {showDropdown ? <BuildDropdown /> : null}
