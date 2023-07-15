@@ -3,6 +3,7 @@ import { instance } from '../api/axiosInstance';
 import api from '../api/api';
 import { AxiosResponseError, Powertrain, PowertrainList, Trim } from '../types/sliceType';
 import { ChangePowertrainReq, FetchTrimReq } from '../types/modelSliceThunkType';
+import { ModalDataType } from '../types/commonType';
 
 const fetchPowertrainList = createAsyncThunk('fetchPowertrainList', async (carNameId: number, { rejectWithValue }) => {
   try {
@@ -61,6 +62,8 @@ export interface PowertrainState {
   powertrainCombination: Array<Powertrain>;
   trimList: Array<Trim>;
   showBuildDropdown: boolean;
+  showModal: boolean;
+  modalData: ModalDataType;
 }
 
 const initialState: PowertrainState = {
@@ -79,6 +82,8 @@ const initialState: PowertrainState = {
   powertrainCombination: [],
   trimList: [],
   showBuildDropdown: false,
+  showModal: false,
+  modalData: {},
 };
 
 export const PowertarinSlice = createSlice({
@@ -87,6 +92,14 @@ export const PowertarinSlice = createSlice({
   reducers: {
     toggleBuildDropdown: state => {
       state.showBuildDropdown = !state.showBuildDropdown;
+    },
+    openModal: (state, action) => {
+      state.showModal = true;
+      state.modalData = action.payload;
+    },
+    closeModal: state => {
+      state.showModal = false;
+      state.modalData = {};
     },
   },
   extraReducers: builder => {
@@ -144,6 +157,6 @@ export const PowertarinSlice = createSlice({
 
 export { fetchPowertrainList, changePowertrain, fetchPowertrainCombination, fetchTrimList };
 
-export const { toggleBuildDropdown } = PowertarinSlice.actions;
+export const { toggleBuildDropdown, openModal, closeModal } = PowertarinSlice.actions;
 
 export default PowertarinSlice.reducer;

@@ -74,10 +74,11 @@ export const BuildNavWrapper = styled.ul`
 
 export const BuildNavMenu = styled.li`
   display: inline-block;
-  font-weight: 400;
-  font-size: 20px;
   height: 49px;
 `;
-export const BuildNavBtn = styled.div`
+export const BuildNavBtn = styled.button<{ current: boolean }>`
+  color: ${props => (props.current ? 'black' : '#00000080')};
+  font-weight: 600;
+  font-size: 20px;
   width: 180px;
 `;
