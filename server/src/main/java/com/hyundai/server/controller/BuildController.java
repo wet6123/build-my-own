@@ -125,12 +125,12 @@ public class BuildController {
 
     @PostMapping("/model/preview")
     @ApiOperation(value = "모델 변경 미리보기", notes = "모델 변경 시 미리보기 모달에서 추가, 삭제 되는 옵션 표기")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
-    })
-    public ResponseEntity<? extends BaseResponseBody> changeModelPreview (ChangeModelReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> changeModelPreview (@RequestBody ChangeModelReq req) {
         try {
 //            모델 변경시 변경되는 가격
             int price = buildService.getChangeModelPrice(req.getCurrentId(), req.getTargetId(), req.getSelected());
@@ -149,12 +149,12 @@ public class BuildController {
 
     @PostMapping("/model")
     @ApiOperation(value = "모델 변경", notes = "모델 변경 시 유지되는 옵션, 선택 가능한 옵션 목록")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
-    })
-    public ResponseEntity<? extends BaseResponseBody> changeModel(ChangeModelReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> changeModel(@RequestBody ChangeModelReq req) {
         try {
 //            모델 변경 후 유지되는 옵션
             List<Integer> selected = buildService.getChangeModelRemainOption(req.getTargetId(), req.getSelected());
@@ -170,13 +170,13 @@ public class BuildController {
 
     @PostMapping("/option")
     @ApiOperation(value = "옵션 목록", notes = "선택된 옵션에 따라서 결과 출력")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "modelId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트"),
-            @ApiImplicitParam(name = "type", value = "add/remove 동작 타입"),
-            @ApiImplicitParam(name = "optionId", value = "옵션 id")
-    })
-    public ResponseEntity<? extends BaseResponseBody> showOptionList(ShowOptionListReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "modelId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트"),
+//            @ApiImplicitParam(name = "type", value = "add/remove/get 동작 타입"),
+//            @ApiImplicitParam(name = "optionId", value = "옵션 id")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> showOptionList(@RequestBody ShowOptionListReq req) {
         try {
             if(!(req.getType().equals("add")||req.getType().equals("remove")))
                 throw new Exception("type이 잘못 입력되었습니다.");
