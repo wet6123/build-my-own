@@ -10,9 +10,7 @@ export function MainCarType({ car, name, startPrice, carImg }: any) {
         <div>{(startPrice / 1000).toLocaleString('ko-KR')}만원~</div>
         <tile.LinkBtn>
           <Link to="/">자세히 보기</Link>
-          <Link to="/build/model" state={{ id: car.id, name: car.carName }}>
-            내 차 만들기
-          </Link>
+          <Link to={`/build/model?id=${car.id}&name=${car.carName}`}>내 차 만들기</Link>
         </tile.LinkBtn>
       </tile.LinkTag>
     </tile.Tile>

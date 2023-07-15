@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { BuildDropdown } from './BuildDropdown';
 import { toggleBuildDropdown } from '../../../slice/modelSlice';
 import { BuildNav } from './BuildNav';
 import * as style from '../../../styles/buildModel/buildNavBarStyle';
 
 export function BuildHeader() {
-  const location = useLocation();
-  const { name } = location.state;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const name = searchParams.get('name');
 
   const dispatch = useDispatch();
   const showDropdown = useSelector((state: any) => state.powertrain.showBuildDropdown);

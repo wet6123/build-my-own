@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, StateType } from '../../store/store';
 import { fetchTrimList } from '../../slice/modelSlice';
@@ -8,8 +8,8 @@ import { TrimTile } from './TrimTile';
 import * as style from '../../styles/buildModel/trimListStyle';
 
 export function TrimSelect() {
-  const location = useLocation();
-  const { id } = location.state;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = Number(searchParams.get('id'));
 
   const dispatch = useDispatch<AppDispatch>();
   const trimList = useSelector((state: StateType) => state.powertrain.trimList);

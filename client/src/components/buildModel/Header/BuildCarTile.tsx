@@ -11,7 +11,7 @@ export function BuildCarTile({ car }: { car: CarName }) {
 
   return (
     <style.Tile>
-      <style.LinkTag onClick={toggle} to="/build/model" state={{ id: car.id, name: car.carName }}>
+      <style.LinkTag onClick={toggle} to={`/build/model?id=${car.id}&name=${car.carName}`}>
         <style.Img src={car.carImage} alt="carImg" />
         <style.CarName>{car.carName}</style.CarName>
         <style.StartPrice>{(car.startPrice / 1000).toLocaleString('ko-KR')}만원~</style.StartPrice>

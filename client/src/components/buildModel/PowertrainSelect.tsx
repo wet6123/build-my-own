@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
-import * as model from '../../styles/buildModel/powertrainSelectPageStyle';
+import { useSearchParams } from 'react-router-dom';
 import { changePowertrain, fetchPowertrainList } from '../../slice/modelSlice';
 import { AppDispatch, StateType } from '../../store/store';
 import { PowertrainTile } from './PowertrainTile';
+import * as model from '../../styles/buildModel/powertrainSelectPageStyle';
 
 export function PowertrainSelect() {
-  const location = useLocation();
-  const { id, name } = location.state;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = Number(searchParams.get('id'));
 
   const dispatch = useDispatch<AppDispatch>();
   const powertrainList = useSelector((state: StateType) => state.powertrain.powertrainList);

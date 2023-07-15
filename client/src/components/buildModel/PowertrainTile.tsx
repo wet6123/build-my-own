@@ -1,12 +1,13 @@
 import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { AppDispatch, StateType } from '../../store/store';
 import { changePowertrain } from '../../slice/modelSlice';
 import * as power from '../../styles/buildModel/powertrainTileStyle';
 
 export function PowertrainTile({ name, value, type }: { name: string; value: string; type: string }) {
-  const location = useLocation();
-  const { id } = location.state;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = Number(searchParams.get('id'));
 
   const dispatch = useDispatch<AppDispatch>();
   const powertrain = useSelector((state: StateType) => state.powertrain.powertrain);
