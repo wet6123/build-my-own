@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { BuildDropdown } from './BuildDropdown';
-import { openModal, toggleBuildDropdown } from '../../../slice/modelSlice';
+import { openModal, toggleBuildDropdown } from '../../slice/modelSlice';
 import { BuildNav } from './BuildNav';
-import * as style from '../../../styles/buildModel/buildNavBarStyle';
+import * as style from '../../styles/buildModel/buildNavBarStyle';
 
 function message() {
   return <div>내 차 만들기를 종료하시겠습니까?</div>;

@@ -1,4 +1,4 @@
-import { BuildHeader } from '../components/buildModel/Header/BuildHeader';
+import { BuildHeader } from '../components/buildHeader/BuildHeader';
 import { TrimSelect } from '../components/buildModel/TrimSelect';
 import { PowertrainSelect } from '../components/buildModel/PowertrainSelect';
 import { Modal } from '../components/common/Modal';

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { CarName } from '../../../types/sliceType';
-import { toggleBuildDropdown } from '../../../slice/modelSlice';
-import * as style from '../../../styles/buildModel/buildCarTileStyle';
+import { CarName } from '../../types/sliceType';
+import { toggleBuildDropdown } from '../../slice/modelSlice';
+import * as style from '../../styles/buildModel/buildCarTileStyle';
 
 export function BuildCarTile({ car }: { car: CarName }) {
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { BuildHeader } from '../components/buildModel/Header/BuildHeader';
+import { BuildHeader } from '../components/buildHeader/BuildHeader';
 import { Modal } from '../components/common/Modal';
 
 export function BuildOptionPage() {

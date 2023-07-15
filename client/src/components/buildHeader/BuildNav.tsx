@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { openModal } from '../../../slice/modelSlice';
-import * as style from '../../../styles/buildModel/buildNavBarStyle';
+import { openModal } from '../../slice/modelSlice';
+import * as style from '../../styles/buildModel/buildNavBarStyle';
 
 function message() {
   return (
