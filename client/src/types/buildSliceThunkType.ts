@@ -25,3 +25,13 @@ export interface FetchExteriorReq {
 export interface FetchExteriorRes {
   exterior: Array<Color>;
 }
+
+export interface FetchInteriorReq {
+  carNameId: number;
+  modelId: number;
+  exteriorId: number;
+}
+
+export interface FetchInteriorRes {
+  interior: Array<Color>;
+}

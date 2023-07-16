@@ -1,4 +1,4 @@
-import { CheckExInReq, FetchExteriorReq } from '../types/buildSliceThunkType';
+import { CheckExInReq, FetchExteriorReq, FetchInteriorReq } from '../types/buildSliceThunkType';
 
 // 경로
 const BUILD_URL = '/build';
@@ -35,6 +35,8 @@ const api = {
     `&modelId=${modelId}`,
   fetchExterior: ({ carNameId, modelId, interiorId }: FetchExteriorReq) =>
     BUILD_URL + EXTERIOR_URL + `?carNameId=${carNameId}` + `&modelId=${modelId}` + `&interior=${interiorId}`,
+  fetchInterior: ({ carNameId, modelId, exteriorId }: FetchInteriorReq) =>
+    BUILD_URL + INTERIOR_URL + `?carNameId=${carNameId}` + `&modelId=${modelId}` + `&exterior=${exteriorId}`,
 
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,

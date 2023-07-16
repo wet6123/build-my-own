@@ -1,5 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { CheckExInReq, CheckExInRes, FetchExteriorReq, FetchExteriorRes } from '../types/buildSliceThunkType';
+import {
+  CheckExInReq,
+  CheckExInRes,
+  FetchExteriorReq,
+  FetchExteriorRes,
+  FetchInteriorReq,
+  FetchInteriorRes,
+} from '../types/buildSliceThunkType';
 import api from '../api/api';
 import { instance } from '../api/axiosInstance';
 import { AxiosResponseError, Color } from '../types/sliceType';
@@ -22,6 +29,19 @@ const fetchExterior = createAsyncThunk<FetchExteriorRes, FetchExteriorReq, { rej
   async (payload, { rejectWithValue }) => {
     try {
       const res = await instance.get(api.fetchExterior(payload), {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
+const fetchInterior = createAsyncThunk<FetchInteriorRes, FetchInteriorReq, { rejectValue: AxiosResponseError }>(
+  'fetchInterior',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.get(api.fetchInterior(payload), {});
       console.log(res.data);
       return res.data;
     } catch (err: any) {
@@ -88,11 +108,23 @@ export const BuildSlice = createSlice({
       .addCase(fetchExterior.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchInterior.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchInterior.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.interiorList = action.payload.interior;
+      })
+      .addCase(fetchInterior.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export { checkExIn, fetchExterior };
+export { checkExIn, fetchExterior, fetchInterior };
 
 export const {} = BuildSlice.actions;
 
