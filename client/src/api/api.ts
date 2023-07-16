@@ -1,3 +1,5 @@
+import { CheckExInReq } from '../types/buildSliceThunkType';
+
 // 경로
 const BUILD_URL = '/build';
 const MODELS_URL = '/models';
@@ -22,6 +24,15 @@ const TRIM_URL = '/trim';
 
 const api = {
   // build
+  checkExIn: ({ beforeEx, beforeIn, carNameId, exterior, interior, modelId }: CheckExInReq) =>
+    BUILD_URL +
+    AVAILABLE_URL +
+    `?beforeEx=${beforeEx}` +
+    `&beforeIn=${beforeIn}` +
+    `&carNameId=${carNameId}` +
+    `&exterior=${exterior}` +
+    `&interior=${interior}` +
+    `&modelId=${modelId}`,
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
   changePowertrain: () => MODELS_URL + POWERTRAIN_URL,
