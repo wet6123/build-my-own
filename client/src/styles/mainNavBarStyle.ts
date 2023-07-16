@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 
 export const Logo = styled.img`
   width: 100%;
-  max-height: 80px;
+  max-height: 50px;
 `;
 
 export const Menu = styled.div`

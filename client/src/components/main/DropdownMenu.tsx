@@ -4,49 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as drop from '../../styles/mainDropdownStyle';
 import { fetchCarNameList } from '../../slice/carNameSlice';
 import { MainCarType } from './MainCarTile';
-
-const ModelList = [
-  {
-    id: 1,
-    name: '수소/전기차',
-  },
-  {
-    id: 2,
-    name: '승용',
-  },
-  {
-    id: 3,
-    name: 'SUV',
-  },
-  {
-    id: 4,
-    name: 'MPV',
-  },
-  {
-    id: 5,
-    name: '소형트럭&택시',
-  },
-  {
-    id: 6,
-    name: '트럭',
-  },
-  {
-    id: 7,
-    name: '버스',
-  },
-  {
-    id: 8,
-    name: 'GENESIS',
-  },
-  {
-    id: 9,
-    name: 'CASPER',
-  },
-];
+import { carTypeList } from '../../utils/menu/carTypeList';
 
 export function DropdownMenu({ name, close }: any) {
   const dispatch = useDispatch();
-  const [carType, setCarType] = useState<String>('수소/전기차');
+  const [carType, setCarType] = useState<string>('수소/전기차');
   const carNameList = useSelector((state: any) => state.carName.carNameList);
   useEffect(() => {
     dispatch(fetchCarNameList(carType));
@@ -58,19 +20,20 @@ export function DropdownMenu({ name, close }: any) {
         <drop.ModelMenu>
           {name == '모델' ? (
             <ul>
-              {ModelList.map((model: any) => (
+              {carTypeList.map((type: any) => (
                 <li>
-                  {carType == model.name ? (
+                  {carType == type.name ? (
                     <>
-                      <drop.CarTypeListHighlight onMouseOver={() => setCarType(model.name)}>
-                        <Link to="/">{model.name}</Link>
+                      <drop.CarTypeListHighlight onMouseOver={() => setCarType(type.name)}>
+                        <Link to="/">{type.name}</Link>
                       </drop.CarTypeListHighlight>
                       <drop.ModelList>
                         <ul>
                           {carNameList &&
                             carNameList.map((carName: any, idx: any) => (
                               <MainCarType
-                                carName={carName.carName}
+                                car={carName}
+                                name={carName.carName}
                                 startPrice={carName.startPrice}
                                 carImg={carName.carImage}
                               />
@@ -79,8 +42,8 @@ export function DropdownMenu({ name, close }: any) {
                       </drop.ModelList>
                     </>
                   ) : (
-                    <drop.CarTypeList onMouseOver={() => setCarType(model.name)}>
-                      <Link to="/">{model.name}</Link>
+                    <drop.CarTypeList onMouseOver={() => setCarType(type.name)}>
+                      <Link to="/">{type.name}</Link>
                     </drop.CarTypeList>
                   )}
                 </li>
