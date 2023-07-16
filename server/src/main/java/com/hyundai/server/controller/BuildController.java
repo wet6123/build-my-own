@@ -178,7 +178,7 @@ public class BuildController {
 //    })
     public ResponseEntity<? extends BaseResponseBody> showOptionList(@RequestBody ShowOptionListReq req) {
         try {
-            if(!(req.getType().equals("add")||req.getType().equals("remove")))
+            if(!(req.getType().equals("add")||req.getType().equals("remove")||req.getType().equals("get")))
                 throw new Exception("type이 잘못 입력되었습니다.");
 
 //            선택된 옵션 리스트 (옵션 추가/삭제 후)
@@ -186,9 +186,9 @@ public class BuildController {
 //            화면에 보여줄 옵션 리스트 선택 가능/불가 표기
             List<OptionDto> options = buildService.getChangeModelOptionList(req.getModelId(), selected);
 //            모달 - 선택 시 추가되는 옵션
-            List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected, req.getType());
+            List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected);
 //            모달 - 선택 시 삭제되는 옵션
-            List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected, req.getType());
+            List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected);
 
             return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove));
         } catch (RuntimeException e) {

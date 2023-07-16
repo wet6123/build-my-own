@@ -17,8 +17,8 @@ public interface BuildService {
     List<Integer> getChangeModelRemainOption(int targetId, List<Integer> selected);
     List<OptionDto> getChangeModelOptionList(int targetId, List<Integer> selected);
     List<Integer> getSelectedOption(Integer modelId, List<Integer> selected, String type, Integer optionId);
-    List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type);
-    List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type);
+    List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected);
+    List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected);
     ModelDto getModelInfo(Integer modelId);
     OptionDto getOptionInfo(Integer optionId);
 }

@@ -202,7 +202,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+    public List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected) {
         List<OptionDto> res = new ArrayList<>();
         for(Integer after : afterSelected) {
             if(!beforeSelected.contains(after)) {
@@ -213,7 +213,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+    public List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected) {
         List<OptionDto> res = new ArrayList<>();
         for(Integer before : beforeSelected) {
             if(!afterSelected.contains(before)) {
