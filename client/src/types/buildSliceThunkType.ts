@@ -1,3 +1,5 @@
+import { Color } from './sliceType';
+
 export interface CheckExInReq {
   beforeEx: number;
   beforeIn: number;
@@ -12,4 +14,14 @@ export interface CheckExInRes {
   warning: string;
   interiorId: number;
   exteriorId: number;
+}
+
+export interface FetchExteriorReq {
+  carNameId: number;
+  modelId: number;
+  interiorId: number;
+}
+
+export interface FetchExteriorRes {
+  exterior: Array<Color>;
 }
