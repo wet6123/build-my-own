@@ -31,11 +31,17 @@ export function ExteriorTile({ exterior }: { exterior: Color }) {
     }
   };
 
+  function calculated(num: number) {
+    if (num) return num;
+    return '-';
+  }
+
   return (
     <style.ColorTile>
       <ColorBtn
         name={exterior.name}
         available={exterior.available}
+        price={calculated(exterior.price)}
         selected={oldExteriorId === exterior.optionId}
         func={() => changeColor(exterior.optionId, exterior.available)}>
         <style.ColorImg src={`${exterior.image}`} alt="exteriorImage" />

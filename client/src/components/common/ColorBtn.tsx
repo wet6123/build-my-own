@@ -6,12 +6,14 @@ export function ColorBtn({
   children,
   name,
   available,
+  price,
   selected,
   func,
 }: {
   children: ReactNode;
   name: string;
   available: boolean;
+  price: number | string | null;
   selected: boolean;
   func: any;
 }) {
@@ -37,7 +39,10 @@ export function ColorBtn({
           {children}
         </style.AlertBtn>
       )}
-      <style.NameTag isHover={hover}>{name}</style.NameTag>
+      <style.NameTag isHover={hover}>
+        <div>{name}</div>
+        {price ? <div>{price}원</div> : null}
+      </style.NameTag>
     </span>
   );
 }
