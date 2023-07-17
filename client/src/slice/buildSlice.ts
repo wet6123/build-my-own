@@ -79,7 +79,18 @@ const initialState: BuildState = {
 export const BuildSlice = createSlice({
   name: 'build',
   initialState,
-  reducers: {},
+  reducers: {
+    setNextInterior: (state, action) => {
+      state.nextInteriorId = action.payload;
+    },
+    setNextExterior: (state, action) => {
+      state.nextExteriorId = action.payload;
+    },
+    resetCheckState: state => {
+      state.warning = '';
+      state.available = true;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(checkExIn.pending, (state, action) => {
@@ -90,8 +101,10 @@ export const BuildSlice = createSlice({
         state.error = '';
         state.available = action.payload.available;
         state.warning = action.payload.warning;
-        state.interiorId = action.payload.interiorId;
-        state.exteriorId = action.payload.exteriorId;
+        if (action.payload.available) {
+          state.interiorId = action.payload.interiorId;
+          state.exteriorId = action.payload.exteriorId;
+        }
       })
       .addCase(checkExIn.rejected, (state, action) => {
         state.loading = false;
@@ -126,6 +139,6 @@ export const BuildSlice = createSlice({
 
 export { checkExIn, fetchExterior, fetchInterior };
 
-export const {} = BuildSlice.actions;
+export const { setNextInterior, setNextExterior, resetCheckState } = BuildSlice.actions;
 
 export default BuildSlice.reducer;
