@@ -68,8 +68,15 @@ public class BuildServiceImpl implements BuildService {
         map.put("carNameId", carNameId);
         map.put("exteriorId", exteriorId);
         List<OptionDto> exteriorInterior = buildDao.selectAvailableInterior(map);
-        for(OptionDto interior : allInterior) {
-            interior.setAvailable(modelInterior.contains(interior) && exteriorInterior.contains(interior));
+        if (exteriorId != 0) {
+            for (OptionDto interior : allInterior) {
+                interior.setAvailable(modelInterior.contains(interior) && exteriorInterior.contains(interior));
+            }
+        } else {
+//            최초로드
+            for (OptionDto interior : allInterior) {
+                interior.setAvailable(modelInterior.contains(interior));
+            }
         }
         return allInterior;
     }
@@ -230,6 +237,8 @@ public class BuildServiceImpl implements BuildService {
 
     @Override
     public OptionDto getOptionInfo(Integer optionId) {
+        if(optionId == null)
+            return null;
         return buildDao.selectOptionByOptionId(optionId);
     }
 }
