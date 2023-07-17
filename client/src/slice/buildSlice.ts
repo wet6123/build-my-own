@@ -83,6 +83,7 @@ export interface BuildState {
   selected: Array<number>;
   add: Array<Option>;
   remove: Array<Option>;
+  target: Option | null;
 }
 
 const initialState: BuildState = {
@@ -103,6 +104,7 @@ const initialState: BuildState = {
   selected: [],
   add: [],
   remove: [],
+  target: null,
 };
 
 export const BuildSlice = createSlice({
@@ -126,8 +128,8 @@ export const BuildSlice = createSlice({
       state.selected = action.payload;
     },
     resetOptionList: state => {
-      state.nextOptionList = [];
-      state.nextSelected = [];
+      state.optionList = [];
+      state.selected = [];
       state.add = [];
       state.remove = [];
     },
@@ -185,6 +187,7 @@ export const BuildSlice = createSlice({
         state.nextSelected = action.payload.selected;
         state.add = action.payload.add;
         state.remove = action.payload.remove;
+        state.target = action.payload.target;
       })
       .addCase(fetchOptionList.rejected, (state, action) => {
         state.loading = false;

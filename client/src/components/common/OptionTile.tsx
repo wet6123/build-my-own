@@ -5,14 +5,19 @@ export function OptionTile({
   option,
   isSelected,
   func,
+  forceUnavailable,
 }: {
   option: Option;
   isSelected: boolean;
   func: (id: number, isRemove: boolean) => void;
+  forceUnavailable: boolean;
 }) {
   return (
     <style.OptionLi>
-      <style.SelectBtn onClick={() => func(option.optionId, isSelected)} type="button">
+      <style.SelectBtn
+        onClick={() => func(option.optionId, isSelected)}
+        type="button"
+        disabled={forceUnavailable && !isSelected && !option.available}>
         <style.AvailableDiv available={option.available}>
           <style.AvailableIcon
             src="https://build-my-own.s3.ap-northeast-2.amazonaws.com/img/common/color_alert.png"

@@ -48,4 +48,5 @@ export interface FetchOptionListRes {
   options: Array<Option>;
   add: Array<Option>;
   remove: Array<Option>;
+  target: Option;
 }
