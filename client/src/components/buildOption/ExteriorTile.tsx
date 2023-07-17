@@ -44,7 +44,7 @@ export function ExteriorTile({ exterior }: { exterior: Color }) {
         price={calculated(exterior.price)}
         selected={oldExteriorId === exterior.optionId}
         func={() => changeColor(exterior.optionId, exterior.available)}>
-        <style.ColorImg src={`${exterior.image}`} alt="exteriorImage" />
+        <style.ExteriorImg src={`${exterior.image}`} alt="exteriorImage" />
       </ColorBtn>
     </style.ColorTile>
   );

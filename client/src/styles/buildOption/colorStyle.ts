@@ -24,7 +24,13 @@ export const ColorTile = styled.li`
   margin: 8px;
 `;
 
-export const ColorImg = styled.img`
+export const ExteriorImg = styled.img`
   width: 85px;
   height: 85px;
+`;
+
+// InteriorTile
+export const InteriorImg = styled.img`
+  width: 496px;
+  height: 75px;
 `;
