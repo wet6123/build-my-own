@@ -37,7 +37,7 @@ const api = {
     BUILD_URL + EXTERIOR_URL + `?carNameId=${carNameId}` + `&modelId=${modelId}` + `&interior=${interiorId}`,
   fetchInterior: ({ carNameId, modelId, exteriorId }: FetchInteriorReq) =>
     BUILD_URL + INTERIOR_URL + `?carNameId=${carNameId}` + `&modelId=${modelId}` + `&exterior=${exteriorId}`,
-
+  fetchOptionList: () => BUILD_URL + OPTION_URL,
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
   changePowertrain: () => MODELS_URL + POWERTRAIN_URL,

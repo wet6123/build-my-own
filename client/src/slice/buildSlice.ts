@@ -6,10 +6,12 @@ import {
   FetchExteriorRes,
   FetchInteriorReq,
   FetchInteriorRes,
+  FetchOptionListReq,
+  FetchOptionListRes,
 } from '../types/buildSliceThunkType';
 import api from '../api/api';
 import { instance } from '../api/axiosInstance';
-import { AxiosResponseError, Color } from '../types/sliceType';
+import { AxiosResponseError, Option } from '../types/sliceType';
 
 const checkExIn = createAsyncThunk<CheckExInRes, CheckExInReq, { rejectValue: AxiosResponseError }>(
   'checkExIn',
@@ -50,6 +52,19 @@ const fetchInterior = createAsyncThunk<FetchInteriorRes, FetchInteriorReq, { rej
   },
 );
 
+const fetchOptionList = createAsyncThunk<FetchOptionListRes, FetchOptionListReq, { rejectValue: AxiosResponseError }>(
+  'fetchOptionList',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.post(api.fetchOptionList(), payload, {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
 export interface BuildState {
   loading: boolean;
   error: any;
@@ -59,8 +74,15 @@ export interface BuildState {
   exteriorId: number;
   nextInteriorId: number;
   nextExteriorId: number;
-  exteriorList: Array<Color>;
-  interiorList: Array<Color>;
+  exteriorList: Array<Option>;
+  interiorList: Array<Option>;
+
+  nextOptionList: Array<Option>;
+  optionList: Array<Option>;
+  nextSelected: Array<number>;
+  selected: Array<number>;
+  add: Array<Option>;
+  remove: Array<Option>;
 }
 
 const initialState: BuildState = {
@@ -74,6 +96,13 @@ const initialState: BuildState = {
   nextExteriorId: 0,
   exteriorList: [],
   interiorList: [],
+
+  nextOptionList: [],
+  optionList: [],
+  nextSelected: [],
+  selected: [],
+  add: [],
+  remove: [],
 };
 
 export const BuildSlice = createSlice({
@@ -89,6 +118,18 @@ export const BuildSlice = createSlice({
     resetCheckState: state => {
       state.warning = '';
       state.available = true;
+    },
+    setOptionList: (state, action) => {
+      state.optionList = action.payload;
+    },
+    setSelected: (state, action) => {
+      state.selected = action.payload;
+    },
+    resetOptionList: state => {
+      state.nextOptionList = [];
+      state.nextSelected = [];
+      state.add = [];
+      state.remove = [];
     },
   },
   extraReducers: builder => {
@@ -133,12 +174,28 @@ export const BuildSlice = createSlice({
       .addCase(fetchInterior.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchOptionList.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchOptionList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.nextOptionList = action.payload.options;
+        state.nextSelected = action.payload.selected;
+        state.add = action.payload.add;
+        state.remove = action.payload.remove;
+      })
+      .addCase(fetchOptionList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export { checkExIn, fetchExterior, fetchInterior };
+export { checkExIn, fetchExterior, fetchInterior, fetchOptionList };
 
-export const { setNextInterior, setNextExterior, resetCheckState } = BuildSlice.actions;
+export const { setNextInterior, setNextExterior, resetCheckState, setOptionList, setSelected, resetOptionList } =
+  BuildSlice.actions;
 
 export default BuildSlice.reducer;

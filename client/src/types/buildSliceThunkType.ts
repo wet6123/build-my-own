@@ -35,3 +35,17 @@ export interface FetchInteriorReq {
 export interface FetchInteriorRes {
   interior: Array<Option>;
 }
+
+export interface FetchOptionListReq {
+  modelId: number;
+  optionId?: number;
+  selected: Array<number>;
+  type: string;
+}
+
+export interface FetchOptionListRes {
+  selected: Array<number>;
+  options: Array<Option>;
+  add: Array<Option>;
+  remove: Array<Option>;
+}
