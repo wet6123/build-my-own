@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { Color } from '../../../types/sliceType';
+import { Option } from '../../../types/sliceType';
 import { AppDispatch } from '../../../store/store';
 import { checkExIn, setNextInterior } from '../../../slice/buildSlice';
 import { ColorBtn } from '../../common/ColorBtn';
 import * as style from '../../../styles/buildOption/colorStyle';
 
-export function InteriorTile({ interior }: { interior: Color }) {
+export function InteriorTile({ interior }: { interior: Option }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = Number(searchParams.get('id'));
   const modelId = Number(searchParams.get('modelId'));

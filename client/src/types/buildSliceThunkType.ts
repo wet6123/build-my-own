@@ -1,4 +1,4 @@
-import { Color } from './sliceType';
+import { Option } from './sliceType';
 
 export interface CheckExInReq {
   beforeEx: number;
@@ -23,7 +23,7 @@ export interface FetchExteriorReq {
 }
 
 export interface FetchExteriorRes {
-  exterior: Array<Color>;
+  exterior: Array<Option>;
 }
 
 export interface FetchInteriorReq {
@@ -33,5 +33,5 @@ export interface FetchInteriorReq {
 }
 
 export interface FetchInteriorRes {
-  interior: Array<Color>;
+  interior: Array<Option>;
 }

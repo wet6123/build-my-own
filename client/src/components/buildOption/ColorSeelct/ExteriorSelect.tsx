@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
 import { fetchExterior, setNextExterior } from '../../../slice/buildSlice';
-import { Color } from '../../../types/sliceType';
+import { Option } from '../../../types/sliceType';
 import { ExteriorTile } from './ExteriorTile';
 import * as style from '../../../styles/buildOption/colorStyle';
 
@@ -37,7 +37,7 @@ export function ExteriorSelect() {
   }, [nextInteriorId]);
 
   useEffect(() => {
-    const found = exteriorList.find((e: Color) => e.optionId == nextExteriorId);
+    const found = exteriorList.find((e: Option) => e.optionId == nextExteriorId);
     if (!found?.available) {
       for (const exterior of exteriorList) {
         if (exterior.available) {
@@ -53,7 +53,7 @@ export function ExteriorSelect() {
       <style.ColorTitle>외장색상</style.ColorTitle>
       <div>
         <style.ColorTileWrapper>
-          {exteriorList?.map((exterior: Color) => <ExteriorTile exterior={exterior} />)}
+          {exteriorList?.map((exterior: Option) => <ExteriorTile exterior={exterior} />)}
         </style.ColorTileWrapper>
       </div>
     </>

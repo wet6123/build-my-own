@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
 import { fetchInterior, setNextInterior } from '../../../slice/buildSlice';
-import { Color } from '../../../types/sliceType';
+import { Option } from '../../../types/sliceType';
 import { InteriorTile } from './InteriorTile';
 import * as style from '../../../styles/buildOption/colorStyle';
 
@@ -31,7 +31,7 @@ export function InteriorSelect() {
   }, [nextExteriorId]);
 
   useEffect(() => {
-    const found = interiorList.find((e: Color) => e.optionId == nextInteriorId);
+    const found = interiorList.find((e: Option) => e.optionId == nextInteriorId);
     if (!found?.available) {
       for (const interior of interiorList) {
         if (interior.available) {
@@ -46,7 +46,7 @@ export function InteriorSelect() {
     <>
       <style.ColorTitle>내장색상</style.ColorTitle>
       <div>
-        <ul>{interiorList?.map((interior: Color) => <InteriorTile interior={interior} />)}</ul>
+        <ul>{interiorList?.map((interior: Option) => <InteriorTile interior={interior} />)}</ul>
       </div>
     </>
   );

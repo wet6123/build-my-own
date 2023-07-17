@@ -32,7 +32,7 @@ export interface Trim {
   drivetrain: string;
 }
 
-export interface Color {
+export interface Option {
   optionId: number;
   price: number;
   type: string;
