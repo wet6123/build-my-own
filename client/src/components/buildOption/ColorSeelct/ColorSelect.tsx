@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { AppDispatch } from '../../store/store';
-import { checkExIn, fetchExterior, fetchInterior, resetCheckState } from '../../slice/buildSlice';
+import { AppDispatch } from '../../../store/store';
+import { checkExIn, fetchExterior, fetchInterior, resetCheckState } from '../../../slice/buildSlice';
 import { InteriorSelect } from './InteriorSelect';
 import { ExteriorSelect } from './ExteriorSelect';
-import { openModal } from '../../slice/modelSlice';
-import * as style from '../../styles/buildOption/colorStyle';
+import { openModal } from '../../../slice/modelSlice';
+import * as style from '../../../styles/buildOption/colorStyle';
 
 export function ColorSelect() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,8 +76,14 @@ export function ColorSelect() {
 
   return (
     <style.ColorSelector>
-        <ExteriorSelect />
-        <InteriorSelect />
-      </style.ColorSelector>
+      <div>nextInteriorId : {nextInteriorId}</div>
+      <div>nextExteriorId : {nextExteriorId}</div>
+      <div>interiorId : {interiorId}</div>
+      <div>exteriorId : {exteriorId}</div>
+      <div>warning : {warning}</div>
+      <div>--------------------------------</div>
+      <ExteriorSelect />
+      <InteriorSelect />
+    </style.ColorSelector>
   );
 }

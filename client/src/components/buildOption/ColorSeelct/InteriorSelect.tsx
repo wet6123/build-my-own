@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { AppDispatch } from '../../store/store';
-import { fetchInterior, setNextInterior } from '../../slice/buildSlice';
-import { Color } from '../../types/sliceType';
+import { AppDispatch } from '../../../store/store';
+import { fetchInterior, setNextInterior } from '../../../slice/buildSlice';
+import { Color } from '../../../types/sliceType';
 import { InteriorTile } from './InteriorTile';
-import * as style from '../../styles/buildOption/colorStyle';
+import * as style from '../../../styles/buildOption/colorStyle';
 
 export function InteriorSelect() {
   const [searchParams, setSearchParams] = useSearchParams();

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { AppDispatch } from '../../store/store';
-import { fetchExterior, setNextExterior } from '../../slice/buildSlice';
-import { Color } from '../../types/sliceType';
+import { AppDispatch } from '../../../store/store';
+import { fetchExterior, setNextExterior } from '../../../slice/buildSlice';
+import { Color } from '../../../types/sliceType';
 import { ExteriorTile } from './ExteriorTile';
-import * as style from '../../styles/buildOption/colorStyle';
+import * as style from '../../../styles/buildOption/colorStyle';
 
 export function ExteriorSelect() {
   const [searchParams, setSearchParams] = useSearchParams();
