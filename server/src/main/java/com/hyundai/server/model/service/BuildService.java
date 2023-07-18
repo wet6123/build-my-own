@@ -2,6 +2,7 @@ package com.hyundai.server.model.service;
 
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface BuildService {
     List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected);
     ModelDto getModelInfo(Integer modelId);
     OptionDto getOptionInfo(Integer optionId);
+
+    Integer getClosestModelId(Integer interior, Integer modelId);
+    TrimDto getTrimByModelId(Integer modelId);
 }

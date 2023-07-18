@@ -4,6 +4,7 @@ import com.hyundai.server.common.request.*;
 import com.hyundai.server.common.response.*;
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 import com.hyundai.server.model.service.BuildService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -98,6 +99,30 @@ public class BuildController {
             List<OptionDto> interiorList = buildService.getInteriorList(req.getCarNameId(), req.getModelId(), req.getExterior());
 
             return ResponseEntity.ok(ShowInteriorRes.of(200, "success", interiorList));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/interior/trim")
+    @ApiOperation(value = "트림 변경이 필요한 내장 색상 변경", notes = "변경되는 트림 정보, 가장 가까운 모델, 변경 후 내장 색상 출력")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "modelId", value = "모델 id"),
+            @ApiImplicitParam(name = "interior", value = "내장 id")
+    })
+    public ResponseEntity<? extends BaseResponseBody> changeInteriorTrim(ChangeInteriorTrimReq req) {
+        try {
+//            변경할 가장 가까운 모델 id
+            Integer modelId = buildService.getClosestModelId(req.getInterior(), req.getModelId());
+//            선택할 내장 색상 id
+            Integer interior = req.getInterior();
+//            변경전 트림 정보
+            TrimDto beforeTrim = buildService.getTrimByModelId(req.getModelId());
+//            변경후 트림 정보
+            TrimDto afterTrim = buildService.getTrimByModelId(modelId);
+
+            return ResponseEntity.ok(ChangeInteriorTrimRes.of(200, "success", beforeTrim, afterTrim, modelId, interior ));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));

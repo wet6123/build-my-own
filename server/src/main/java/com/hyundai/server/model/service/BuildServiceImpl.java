@@ -3,6 +3,7 @@ package com.hyundai.server.model.service;
 import com.hyundai.server.model.dao.BuildDao;
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -240,5 +241,18 @@ public class BuildServiceImpl implements BuildService {
         if(optionId == null)
             return null;
         return buildDao.selectOptionByOptionId(optionId);
+    }
+
+    @Override
+    public Integer getClosestModelId(Integer interior, Integer modelId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("interior", interior);
+        map.put("modelId", modelId);
+        return buildDao.selectClosestModelId(map);
+    }
+
+    @Override
+    public TrimDto getTrimByModelId(Integer modelId) {
+        return buildDao.selectTrimByModelId(modelId);
     }
 }
