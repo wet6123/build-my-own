@@ -69,6 +69,7 @@ export interface BuildState {
   loading: boolean;
   error: any;
   available: boolean;
+  type: string;
   warning: string;
   interiorId: number;
   exteriorId: number;
@@ -90,6 +91,7 @@ const initialState: BuildState = {
   loading: false,
   error: '',
   available: true,
+  type: '',
   warning: '',
   interiorId: 0,
   exteriorId: 0,
@@ -143,6 +145,7 @@ export const BuildSlice = createSlice({
         state.loading = false;
         state.error = '';
         state.available = action.payload.available;
+        state.type = action.payload.type;
         state.warning = action.payload.warning;
         if (action.payload.available) {
           state.interiorId = action.payload.interiorId;

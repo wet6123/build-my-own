@@ -11,6 +11,7 @@ export interface CheckExInReq {
 
 export interface CheckExInRes {
   available: boolean;
+  type: string;
   warning: string;
   interiorId: number;
   exteriorId: number;
