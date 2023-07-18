@@ -1,17 +1,19 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
-import { checkExIn, fetchExterior, fetchInterior, resetCheckState } from '../../../slice/buildSlice';
+import { changeTrim, checkExIn, fetchExterior, fetchInterior, resetCheckState } from '../../../slice/buildSlice';
 import { InteriorSelect } from './InteriorSelect';
 import { ExteriorSelect } from './ExteriorSelect';
 import { openModal } from '../../../slice/modelSlice';
 import * as style from '../../../styles/buildOption/colorStyle';
+import { ColorChangeMessage } from '../../common/Modal/ColorChangeMessage';
 
 export function ColorSelect() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const id = Number(searchParams.get('id'));
-  const name = Number(searchParams.get('name'));
+  const name = String(searchParams.get('name'));
   const modelId = Number(searchParams.get('modelId'));
 
   const dispatch = useDispatch<AppDispatch>();
@@ -24,55 +26,91 @@ export function ColorSelect() {
   const nextExteriorId = useSelector((state: any) => state.build.nextExteriorId);
   const exteriorList = useSelector((state: any) => state.build.exteriorList);
   const interiorList = useSelector((state: any) => state.build.interiorList);
+  const type = useSelector((state: any) => state.build.type);
+  const targetInterior = useSelector((state: any) => state.build.targetInterior);
+  const targetModelId = useSelector((state: any) => state.build.targetModelId);
 
-  const refreshExterior = () => {
+  // const refreshExterior = () => {
+  //   const payload = {
+  //     carNameId: id,
+  //     modelId,
+  //     interiorId: nextInteriorId,
+  //   };
+  //   dispatch(fetchExterior(payload));
+  // };
+
+  // const refreshInterior = () => {
+  //   const payload = {
+  //     carNameId: id,
+  //     modelId,
+  //     exteriorId: nextExteriorId,
+  //   };
+  //   dispatch(fetchInterior(payload));
+  // };
+
+  useEffect(() => {
     const payload = {
       carNameId: id,
       modelId,
-      interiorId: nextInteriorId,
+      exteriorId: 0,
     };
-    dispatch(fetchExterior(payload));
-  };
 
-  const refreshInterior = () => {
-    const payload = {
-      carNameId: id,
-      modelId,
-      exteriorId: nextExteriorId,
-    };
     dispatch(fetchInterior(payload));
-  };
+  }, []);
 
-  const checkColorCombination = (exterior: number, interior: number) => {
+  useEffect(() => {
     const paylaod = {
       beforeEx: exteriorId,
       beforeIn: interiorId,
       carNameId: id,
-      exterior,
-      interior,
+      exterior: nextExteriorId,
+      interior: nextInteriorId,
       modelId,
     };
     dispatch(checkExIn(paylaod));
-  };
-
-  useEffect(() => {
-    checkColorCombination(nextExteriorId, nextInteriorId);
   }, [nextInteriorId, nextExteriorId]);
 
   useEffect(() => {
-    if (!loading && !available && warning && exteriorId != 0 && interiorId != 0) {
-      const message = () => <div>{warning}</div>;
+    if (
+      !loading &&
+      !available &&
+      warning &&
+      exteriorId != 0 &&
+      interiorId != 0 &&
+      (type !== 'trim' || (type === 'trim' && targetInterior != 0))
+    ) {
+      const message = () => <ColorChangeMessage />;
       const children = message();
       const onCancel = () => {
         dispatch(resetCheckState());
       };
       const onSubmit = () => {
+        if (type === 'trim') {
+          // modelChange
+          // **********************
+          navigate(`/build/option?id=${id}&name=${name}&modelId=${targetModelId}`);
+          const paylaod = {
+            beforeEx: exteriorId,
+            beforeIn: interiorId,
+            carNameId: id,
+            exterior: nextExteriorId,
+            interior: targetInterior,
+            modelId: targetModelId,
+          };
+          dispatch(changeTrim(paylaod));
+          const payload = {
+            carNameId: id,
+            modelId: targetModelId,
+            exteriorId: nextExteriorId,
+          };
+          dispatch(fetchInterior(payload));
+        }
         dispatch(resetCheckState());
       };
 
       dispatch(openModal({ children, onCancel, onSubmit }));
     }
-  }, [loading, available]);
+  }, [loading, available, targetInterior]);
 
   return (
     <style.ColorSelector>
@@ -81,6 +119,9 @@ export function ColorSelect() {
       <div>interiorId : {interiorId}</div>
       <div>exteriorId : {exteriorId}</div>
       <div>warning : {warning}</div>
+      <div>type : {type}</div>
+      <div>targetInterior : {targetInterior}</div>
+      <div>targetModelId : {targetModelId}</div>
       <div>--------------------------------</div>
       <ExteriorSelect />
       <InteriorSelect />

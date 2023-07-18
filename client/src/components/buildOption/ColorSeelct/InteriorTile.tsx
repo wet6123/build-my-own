@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { Option } from '../../../types/sliceType';
 import { AppDispatch } from '../../../store/store';
-import { checkExIn, setNextInterior } from '../../../slice/buildSlice';
+import { checkExIn, fetchClosestTrim, setNextInterior } from '../../../slice/buildSlice';
 import { ColorBtn } from '../../common/ColorBtn';
 import * as style from '../../../styles/buildOption/colorStyle';
 
@@ -19,7 +19,7 @@ export function InteriorTile({ interior }: { interior: Option }) {
     if (available) {
       dispatch(setNextInterior(interiorId));
     } else {
-      const paylaod = {
+      const payload = {
         beforeEx: oldExteriorId,
         beforeIn: oldInteriorId,
         carNameId: id,
@@ -27,7 +27,13 @@ export function InteriorTile({ interior }: { interior: Option }) {
         interior: interiorId,
         modelId,
       };
-      dispatch(checkExIn(paylaod));
+      dispatch(checkExIn(payload));
+
+      const payload1 = {
+        interior: interiorId,
+        modelId,
+      };
+      dispatch(fetchClosestTrim(payload1));
     }
   };
 

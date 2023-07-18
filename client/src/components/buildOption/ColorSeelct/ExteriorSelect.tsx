@@ -10,7 +10,7 @@ import * as style from '../../../styles/buildOption/colorStyle';
 export function ExteriorSelect() {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = Number(searchParams.get('id'));
-  const name = Number(searchParams.get('name'));
+  const name = String(searchParams.get('name'));
   const modelId = Number(searchParams.get('modelId'));
 
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +33,7 @@ export function ExteriorSelect() {
   };
 
   useEffect(() => {
-    if (nextInteriorId != 0) refreshExterior();
+    refreshExterior();
   }, [nextInteriorId]);
 
   useEffect(() => {

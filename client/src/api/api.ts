@@ -1,4 +1,4 @@
-import { CheckExInReq, FetchExteriorReq, FetchInteriorReq } from '../types/buildSliceThunkType';
+import { CheckExInReq, FetchExteriorReq, FetchInteriorReq, FetchClosestTrimReq } from '../types/buildSliceThunkType';
 
 // 경로
 const BUILD_URL = '/build';
@@ -10,6 +10,7 @@ const NAMES_URL = '/names';
 const AVAILABLE_URL = '/available';
 const EXTERIOR_URL = '/exterior';
 const INTERIOR_URL = '/interior';
+const INTERIOR_TRIM_URL = '/interior/trim';
 const MODEL_URL = '/model';
 const MODEL_INFO_URL = '/model/info';
 const MODEL_PREVIEW_URL = '/model/preview';
@@ -38,6 +39,8 @@ const api = {
   fetchInterior: ({ carNameId, modelId, exteriorId }: FetchInteriorReq) =>
     BUILD_URL + INTERIOR_URL + `?carNameId=${carNameId}` + `&modelId=${modelId}` + `&exterior=${exteriorId}`,
   fetchOptionList: () => BUILD_URL + OPTION_URL,
+  FetchClosestTrim: ({ interior, modelId }: FetchClosestTrimReq) =>
+    BUILD_URL + INTERIOR_TRIM_URL + `?interior=${interior}` + `&modelId=${modelId}`,
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
   changePowertrain: () => MODELS_URL + POWERTRAIN_URL,

@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   CheckExInReq,
   CheckExInRes,
+  FetchClosestTrimReq,
+  FetchClosestTrimRes,
   FetchExteriorReq,
   FetchExteriorRes,
   FetchInteriorReq,
@@ -11,7 +13,7 @@ import {
 } from '../types/buildSliceThunkType';
 import api from '../api/api';
 import { instance } from '../api/axiosInstance';
-import { AxiosResponseError, Option } from '../types/sliceType';
+import { AxiosResponseError, Option, Trim } from '../types/sliceType';
 
 const checkExIn = createAsyncThunk<CheckExInRes, CheckExInReq, { rejectValue: AxiosResponseError }>(
   'checkExIn',
@@ -65,6 +67,33 @@ const fetchOptionList = createAsyncThunk<FetchOptionListRes, FetchOptionListReq,
   },
 );
 
+const fetchClosestTrim = createAsyncThunk<
+  FetchClosestTrimRes,
+  FetchClosestTrimReq,
+  { rejectValue: AxiosResponseError }
+>('fetchClosestTrim', async (payload, { rejectWithValue }) => {
+  try {
+    const res = await instance.get(api.FetchClosestTrim(payload), {});
+    console.log(res.data);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
+const changeTrim = createAsyncThunk<CheckExInRes, CheckExInReq, { rejectValue: AxiosResponseError }>(
+  'changeTrim',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.get(api.checkExIn(payload), {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
 export interface BuildState {
   loading: boolean;
   error: any;
@@ -85,6 +114,11 @@ export interface BuildState {
   add: Array<Option>;
   remove: Array<Option>;
   target: Option | null;
+
+  beforeTrim: Trim | null;
+  afterTrim: Trim | null;
+  targetModelId: number;
+  targetInterior: number;
 }
 
 const initialState: BuildState = {
@@ -107,6 +141,11 @@ const initialState: BuildState = {
   add: [],
   remove: [],
   target: null,
+
+  beforeTrim: null,
+  afterTrim: null,
+  targetModelId: 0,
+  targetInterior: 0,
 };
 
 export const BuildSlice = createSlice({
@@ -119,9 +158,22 @@ export const BuildSlice = createSlice({
     setNextExterior: (state, action) => {
       state.nextExteriorId = action.payload;
     },
+    resetColor: state => {
+      state.interiorId = 0;
+      state.exteriorId = 0;
+      state.nextInteriorId = 0;
+      state.nextExteriorId = 0;
+      state.exteriorList = [];
+      state.interiorList = [];
+    },
     resetCheckState: state => {
+      state.type = '';
       state.warning = '';
       state.available = true;
+      state.beforeTrim = null;
+      state.afterTrim = null;
+      state.targetModelId = 0;
+      state.targetInterior = 0;
     },
     setOptionList: (state, action) => {
       state.optionList = action.payload;
@@ -134,6 +186,9 @@ export const BuildSlice = createSlice({
       state.selected = [];
       state.add = [];
       state.remove = [];
+    },
+    setInterior: (state, action) => {
+      state.targetInterior = action.payload;
     },
   },
   extraReducers: builder => {
@@ -195,13 +250,56 @@ export const BuildSlice = createSlice({
       .addCase(fetchOptionList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchClosestTrim.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchClosestTrim.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.beforeTrim = action.payload.beforeTrim;
+        state.afterTrim = action.payload.afterTrim;
+        state.targetModelId = action.payload.modelId;
+        state.targetInterior = action.payload.interior;
+      })
+      .addCase(fetchClosestTrim.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(changeTrim.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(changeTrim.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.available = action.payload.available;
+        state.type = action.payload.type;
+        state.warning = action.payload.warning;
+        if (action.payload.available) {
+          state.interiorId = 0;
+          state.exteriorId = 0;
+          state.nextInteriorId = action.payload.interiorId;
+          state.nextExteriorId = action.payload.exteriorId;
+        }
+      })
+      .addCase(changeTrim.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export { checkExIn, fetchExterior, fetchInterior, fetchOptionList };
+export { checkExIn, fetchExterior, fetchInterior, fetchOptionList, fetchClosestTrim, changeTrim };
 
-export const { setNextInterior, setNextExterior, resetCheckState, setOptionList, setSelected, resetOptionList } =
-  BuildSlice.actions;
+export const {
+  setNextInterior,
+  setNextExterior,
+  resetColor,
+  resetCheckState,
+  setOptionList,
+  setSelected,
+  resetOptionList,
+  setInterior,
+} = BuildSlice.actions;
 
 export default BuildSlice.reducer;

@@ -1,4 +1,4 @@
-import { Option } from './sliceType';
+import { Option, Trim } from './sliceType';
 
 export interface CheckExInReq {
   beforeEx: number;
@@ -50,4 +50,16 @@ export interface FetchOptionListRes {
   add: Array<Option>;
   remove: Array<Option>;
   target: Option;
+}
+
+export interface FetchClosestTrimReq {
+  interior: number;
+  modelId: number;
+}
+
+export interface FetchClosestTrimRes {
+  beforeTrim: Trim;
+  afterTrim: Trim;
+  modelId: number;
+  interior: number;
 }
