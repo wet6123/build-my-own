@@ -63,3 +63,15 @@ export interface FetchClosestTrimRes {
   modelId: number;
   interior: number;
 }
+
+export interface ModelPreviewReq {
+  currentId: number;
+  targetId: number;
+  selected: Array<number>;
+}
+
+export interface ModelPreviewRes {
+  price: number;
+  add: Array<Option>;
+  remove: Array<Option>;
+}

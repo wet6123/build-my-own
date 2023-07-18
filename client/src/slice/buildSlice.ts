@@ -10,6 +10,8 @@ import {
   FetchInteriorRes,
   FetchOptionListReq,
   FetchOptionListRes,
+  ModelPreviewReq,
+  ModelPreviewRes,
 } from '../types/buildSliceThunkType';
 import api from '../api/api';
 import { instance } from '../api/axiosInstance';
@@ -73,7 +75,7 @@ const fetchClosestTrim = createAsyncThunk<
   { rejectValue: AxiosResponseError }
 >('fetchClosestTrim', async (payload, { rejectWithValue }) => {
   try {
-    const res = await instance.get(api.FetchClosestTrim(payload), {});
+    const res = await instance.get(api.fetchClosestTrim(payload), {});
     console.log(res.data);
     return res.data;
   } catch (err: any) {
@@ -86,6 +88,19 @@ const changeTrim = createAsyncThunk<CheckExInRes, CheckExInReq, { rejectValue: A
   async (payload, { rejectWithValue }) => {
     try {
       const res = await instance.get(api.checkExIn(payload), {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
+const modelPreview = createAsyncThunk<ModelPreviewRes, ModelPreviewReq, { rejectValue: AxiosResponseError }>(
+  'modelPreview',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.post(api.modelPreview(), payload, {});
       console.log(res.data);
       return res.data;
     } catch (err: any) {
@@ -119,6 +134,10 @@ export interface BuildState {
   afterTrim: Trim | null;
   targetModelId: number;
   targetInterior: number;
+
+  previewPrice: number;
+  previewAdd: Array<Option>;
+  previewRemove: Array<Option>;
 }
 
 const initialState: BuildState = {
@@ -146,6 +165,10 @@ const initialState: BuildState = {
   afterTrim: null,
   targetModelId: 0,
   targetInterior: 0,
+
+  previewPrice: 0,
+  previewAdd: [],
+  previewRemove: [],
 };
 
 export const BuildSlice = createSlice({
@@ -285,11 +308,25 @@ export const BuildSlice = createSlice({
       .addCase(changeTrim.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(modelPreview.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(modelPreview.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.previewPrice = action.payload.price;
+        state.previewAdd = action.payload.add;
+        state.previewRemove = action.payload.remove;
+      })
+      .addCase(modelPreview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export { checkExIn, fetchExterior, fetchInterior, fetchOptionList, fetchClosestTrim, changeTrim };
+export { checkExIn, fetchExterior, fetchInterior, fetchOptionList, fetchClosestTrim, changeTrim, modelPreview };
 
 export const {
   setNextInterior,
