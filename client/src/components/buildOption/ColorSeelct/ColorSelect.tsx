@@ -79,7 +79,7 @@ export function ColorSelect() {
       interiorId != 0 &&
       (type !== 'trim' || (type === 'trim' && targetInterior != 0))
     ) {
-      const message = () => <ColorChangeMessage />;
+      const message = () => <ColorChangeMessage currentId={modelId} targetId={targetModelId} />;
       const children = message();
       const onCancel = () => {
         dispatch(resetCheckState());
