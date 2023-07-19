@@ -246,9 +246,9 @@ public class BuildController {
 
     @PostMapping("/option/info")
     @ApiOperation(value = "옵션 목록 조회 (완성 화면)", notes = "옵션 리스트의 정보를 조회해서 반환합니다.")
-    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestBody List<Integer> optionList) {
+    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestBody ShowOptionInfoReq req) {
         try {
-            List<OptionDto> optionInfo = buildService.getOptionInfoList(optionList);
+            List<OptionDto> optionInfo = buildService.getOptionInfoList(req.getOptionList());
 
             return ResponseEntity.ok(ShowOptionInfoRes.of(200, "success", optionInfo));
         } catch (RuntimeException e) {
