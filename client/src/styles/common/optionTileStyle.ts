@@ -1,12 +1,5 @@
 import { styled } from 'styled-components';
 
-// DetailSelect
-export const OptionUl = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-`;
-
 // optionTile
 export const OptionLi = styled.li`
   position: relative;

@@ -197,6 +197,7 @@ export interface BuildState {
   exteriorPreview: string;
 
   showPreview: string;
+  optionExpand: boolean;
 }
 
 const initialState: BuildState = {
@@ -242,6 +243,7 @@ const initialState: BuildState = {
   exteriorPreview: '',
 
   showPreview: 'ex',
+  optionExpand: false,
 };
 
 export const BuildSlice = createSlice({
@@ -297,6 +299,9 @@ export const BuildSlice = createSlice({
     },
     setShowPreview: (state, action) => {
       state.showPreview = action.payload;
+    },
+    SetOptionExpand: (state, action) => {
+      state.optionExpand = action.payload;
     },
   },
   extraReducers: builder => {
@@ -478,6 +483,7 @@ export const {
   setInteriorPreview,
   setExteriorPreview,
   setShowPreview,
+  SetOptionExpand,
 } = BuildSlice.actions;
 
 export default BuildSlice.reducer;

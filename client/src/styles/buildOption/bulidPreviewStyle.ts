@@ -9,7 +9,7 @@ export const PreviewHeader = styled.header`
 export const PreviewTitle = styled.h2`
   font-size: 30px;
   font-weight: 600;
-  margin: 20px 0;
+  margin: 0 0 10px 0;
 `;
 
 export const PreviewModelName = styled.span`
@@ -27,13 +27,13 @@ export const PreviewBtn = styled.button`
 `;
 
 export const PreviewWrapper = styled.div`
-  margin-top: 60px;
+  margin-top: 35px;
 `;
 
 export const PreviewPriceTitle = styled.span`
   font-size: 19px;
   font-weight: 600;
-  margin-right: 40px;
+  margin-right: 30px;
 `;
 
 export const PreviewPrice = styled.b`
@@ -42,7 +42,7 @@ export const PreviewPrice = styled.b`
 `;
 
 export const PreviewImgWrapper = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   position: relative;
   width: 100%;
   height: 0;
@@ -72,6 +72,7 @@ export const PreviewInImg = styled.img<{ show: boolean }>`
 export const PreviewWarning = styled.div`
   margin-top: 20px;
   font-size: 14px;
+  letter-spacing: -0.8px;
   color: #666;
 `;
 

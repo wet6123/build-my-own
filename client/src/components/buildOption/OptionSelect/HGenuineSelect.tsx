@@ -4,7 +4,7 @@ import { AppDispatch } from '../../../store/store';
 import { fetchOptionList } from '../../../slice/buildSlice';
 import { Option } from '../../../types/sliceType';
 import { OptionTile } from '../../common/OptionTile';
-import * as style from '../../../styles/common/optionTileStyle';
+import * as style from '../../../styles/buildOption/optionSelectStyle';
 
 export function HGenuineSelect() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,10 +29,10 @@ export function HGenuineSelect() {
 
   return (
     <>
-      <div>H Genuine Accessories</div>
-      <div>
+      <style.OptionTitle>H Genuine Accessories</style.OptionTitle>
+      <style.OptionDescription>
         다양한 일반 편의, 레저 상품 등으로 차별화 커스터마이징을 원하는 고객의 니즈 및 라이프스타일을 지원합니다.
-      </div>
+      </style.OptionDescription>
       <style.OptionUl>
         {optionList?.map((HGenuineOption: Option) => {
           if (HGenuineOption.type === 'H Genuine Accessories' && HGenuineOption.available)

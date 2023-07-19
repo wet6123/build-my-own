@@ -1,14 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
 import {
+  SetOptionExpand,
   changeModel,
   changeTrim,
   checkExIn,
   fetchExterior,
   fetchInterior,
   resetCheckState,
+  setShowPreview,
 } from '../../../slice/buildSlice';
 import { InteriorSelect } from './InteriorSelect';
 import { ExteriorSelect } from './ExteriorSelect';
@@ -38,23 +40,27 @@ export function ColorSelect() {
   const targetModelId = useSelector((state: any) => state.build.targetModelId);
   const selected = useSelector((state: any) => state.build.selected);
 
-  // const refreshExterior = () => {
-  //   const payload = {
-  //     carNameId: id,
-  //     modelId,
-  //     interiorId: nextInteriorId,
-  //   };
-  //   dispatch(fetchExterior(payload));
-  // };
+  const exteriorRef = useRef<HTMLDivElement>(null);
 
-  // const refreshInterior = () => {
-  //   const payload = {
-  //     carNameId: id,
-  //     modelId,
-  //     exteriorId: nextExteriorId,
-  //   };
-  //   dispatch(fetchInterior(payload));
-  // };
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) dispatch(setShowPreview('ex'));
+      else dispatch(setShowPreview('in'));
+    });
+
+    exteriorRef.current && observer.observe(exteriorRef.current);
+  }, []);
+
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) dispatch(SetOptionExpand(true));
+      else dispatch(SetOptionExpand(false));
+    });
+
+    detailRef.current && observer.observe(detailRef.current);
+  }, []);
 
   useEffect(() => {
     const payload = {
@@ -127,16 +133,9 @@ export function ColorSelect() {
 
   return (
     <style.ColorSelector>
-      <div>nextInteriorId : {nextInteriorId}</div>
-      <div>nextExteriorId : {nextExteriorId}</div>
-      <div>interiorId : {interiorId}</div>
-      <div>exteriorId : {exteriorId}</div>
-      <div>warning : {warning}</div>
-      <div>type : {type}</div>
-      <div>targetInterior : {targetInterior}</div>
-      <div>targetModelId : {targetModelId}</div>
-      <div>--------------------------------</div>
+      <div ref={exteriorRef} />
       <ExteriorSelect />
+      <div ref={detailRef} />
       <InteriorSelect />
     </style.ColorSelector>
   );

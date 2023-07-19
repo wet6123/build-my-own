@@ -2,10 +2,16 @@ import { styled } from 'styled-components';
 
 // ColorSelect
 export const ColorSelector = styled.div`
-  width: 640px;
-  padding: 0 60px;
+  width: 100%;
 `;
 
+export const ColorHeader = styled.div`
+  position: fixed;
+  top: 100px;
+  width: 640px;
+  padding-left: 70px;
+  opacity: 1;
+`;
 // ExteriorSelect
 
 export const ColorTitle = styled.p`

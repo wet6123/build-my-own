@@ -4,7 +4,7 @@ import { Option } from '../../../types/sliceType';
 import { OptionTile } from '../../common/OptionTile';
 import { AppDispatch } from '../../../store/store';
 import { fetchOptionList } from '../../../slice/buildSlice';
-import * as style from '../../../styles/common/optionTileStyle';
+import * as style from '../../../styles/buildOption/optionSelectStyle';
 
 export function DetailSelect() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,7 +29,7 @@ export function DetailSelect() {
 
   return (
     <>
-      <div>상세 품목</div>
+      <style.OptionTitle>상세 품목</style.OptionTitle>
       <div>
         <style.OptionUl>
           {optionList?.map((detailOption: Option) => {
