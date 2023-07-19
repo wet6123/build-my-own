@@ -244,14 +244,13 @@ public class BuildController {
         }
     }
 
-    @GetMapping("/option")
-    @ApiOperation(value = "단일 옵션 조회 (완성 화면)", notes = "단일 옵션의 정보를 조회해서 반환합니다.")
-    @ApiImplicitParam(name = "optionId", value = "옵션 id")
-    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestParam("optionId") Integer optionId) {
+    @PostMapping("/option/info")
+    @ApiOperation(value = "옵션 목록 조회 (완성 화면)", notes = "옵션 리스트의 정보를 조회해서 반환합니다.")
+    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestBody List<Integer> optionList) {
         try {
-            OptionDto option = buildService.getOptionInfo(optionId);
+            List<OptionDto> optionInfo = buildService.getOptionInfoList(optionList);
 
-            return ResponseEntity.ok(ShowOptionInfoRes.of(200, "success", option.getOptionId(), option.getPrice(), option.getType(), option.getName(), option.getImage(), option.getPreview(), option.getAvailable()));
+            return ResponseEntity.ok(ShowOptionInfoRes.of(200, "success", optionInfo));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));

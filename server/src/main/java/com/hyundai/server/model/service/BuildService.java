@@ -22,6 +22,7 @@ public interface BuildService {
     List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected);
     ModelDto getModelInfo(Integer modelId);
     OptionDto getOptionInfo(Integer optionId);
+    List<OptionDto> getOptionInfoList(List<Integer> optionId);
 
     Integer getClosestModelId(Integer interior, Integer modelId);
     TrimDto getTrimByModelId(Integer modelId);

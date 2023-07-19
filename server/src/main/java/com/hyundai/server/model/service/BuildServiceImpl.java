@@ -255,4 +255,13 @@ public class BuildServiceImpl implements BuildService {
     public TrimDto getTrimByModelId(Integer modelId) {
         return buildDao.selectTrimByModelId(modelId);
     }
+
+    @Override
+    public List<OptionDto> getOptionInfoList(List<Integer> optionList) {
+        List<OptionDto> res = new ArrayList<>();
+        for(Integer optionId : optionList) {
+            res.add(buildDao.selectOptionByOptionId(optionId));
+        }
+        return res;
+    }
 }
