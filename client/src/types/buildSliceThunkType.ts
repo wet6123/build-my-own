@@ -86,3 +86,15 @@ export interface ChangeModelRes {
   selected: Array<number>;
   options: Array<Option>;
 }
+
+export interface FetchModelInfoReq {
+  modelId: number;
+}
+
+export interface FetchModelInfoRes {
+  modelName: string;
+  trim: string;
+  price: number;
+  displacement: number;
+  averageMileage: number;
+}

@@ -10,6 +10,8 @@ import {
   FetchExteriorRes,
   FetchInteriorReq,
   FetchInteriorRes,
+  FetchModelInfoReq,
+  FetchModelInfoRes,
   FetchOptionListReq,
   FetchOptionListRes,
   ModelPreviewReq,
@@ -124,6 +126,19 @@ const changeModel = createAsyncThunk<ChangeModelRes, ChangeModelReq, { rejectVal
   },
 );
 
+const fetchModelInfo = createAsyncThunk<FetchModelInfoRes, FetchModelInfoReq, { rejectValue: AxiosResponseError }>(
+  'fetchModelInfo',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.get(api.fetchModelInfo(payload), {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
 export interface BuildState {
   loading: boolean;
   error: any;
@@ -153,6 +168,14 @@ export interface BuildState {
   previewPrice: number;
   previewAdd: Array<Option>;
   previewRemove: Array<Option>;
+
+  modelName: string;
+  trim: string;
+  price: number;
+  displacement: number;
+  averageMileage: number;
+
+  totalPrice: number;
 }
 
 const initialState: BuildState = {
@@ -184,6 +207,14 @@ const initialState: BuildState = {
   previewPrice: 0,
   previewAdd: [],
   previewRemove: [],
+
+  modelName: '',
+  trim: '',
+  price: 0,
+  displacement: 0,
+  averageMileage: 0,
+
+  totalPrice: 0,
 };
 
 export const BuildSlice = createSlice({
@@ -227,6 +258,9 @@ export const BuildSlice = createSlice({
     },
     setInterior: (state, action) => {
       state.targetInterior = action.payload;
+    },
+    setTotalPrice: (state, action) => {
+      state.totalPrice = action.payload;
     },
   },
   extraReducers: builder => {
@@ -350,6 +384,22 @@ export const BuildSlice = createSlice({
       .addCase(changeModel.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchModelInfo.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchModelInfo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.modelName = action.payload.modelName;
+        state.trim = action.payload.trim;
+        state.price = action.payload.price;
+        state.displacement = action.payload.displacement;
+        state.averageMileage = action.payload.averageMileage;
+      })
+      .addCase(fetchModelInfo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -363,6 +413,7 @@ export {
   changeTrim,
   modelPreview,
   changeModel,
+  fetchModelInfo,
 };
 
 export const {
@@ -374,6 +425,7 @@ export const {
   setSelected,
   resetOptionList,
   setInterior,
+  setTotalPrice,
 } = BuildSlice.actions;
 
 export default BuildSlice.reducer;
