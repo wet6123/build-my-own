@@ -75,3 +75,14 @@ export interface ModelPreviewRes {
   add: Array<Option>;
   remove: Array<Option>;
 }
+
+export interface ChangeModelReq {
+  currentId: number;
+  targetId: number;
+  selected: Array<number>;
+}
+
+export interface ChangeModelRes {
+  selected: Array<number>;
+  options: Array<Option>;
+}

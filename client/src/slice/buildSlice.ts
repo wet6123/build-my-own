@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  ChangeModelReq,
+  ChangeModelRes,
   CheckExInReq,
   CheckExInRes,
   FetchClosestTrimReq,
@@ -101,6 +103,19 @@ const modelPreview = createAsyncThunk<ModelPreviewRes, ModelPreviewReq, { reject
   async (payload, { rejectWithValue }) => {
     try {
       const res = await instance.post(api.modelPreview(), payload, {});
+      console.log(res.data);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
+  },
+);
+
+const changeModel = createAsyncThunk<ChangeModelRes, ChangeModelReq, { rejectValue: AxiosResponseError }>(
+  'changeModel',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await instance.post(api.changeModel(), payload, {});
       console.log(res.data);
       return res.data;
     } catch (err: any) {
@@ -322,11 +337,33 @@ export const BuildSlice = createSlice({
       .addCase(modelPreview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(changeModel.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(changeModel.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = '';
+        state.optionList = action.payload.options;
+        state.selected = action.payload.selected;
+      })
+      .addCase(changeModel.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export { checkExIn, fetchExterior, fetchInterior, fetchOptionList, fetchClosestTrim, changeTrim, modelPreview };
+export {
+  checkExIn,
+  fetchExterior,
+  fetchInterior,
+  fetchOptionList,
+  fetchClosestTrim,
+  changeTrim,
+  modelPreview,
+  changeModel,
+};
 
 export const {
   setNextInterior,

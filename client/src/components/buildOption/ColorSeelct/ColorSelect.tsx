@@ -2,7 +2,14 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
-import { changeTrim, checkExIn, fetchExterior, fetchInterior, resetCheckState } from '../../../slice/buildSlice';
+import {
+  changeModel,
+  changeTrim,
+  checkExIn,
+  fetchExterior,
+  fetchInterior,
+  resetCheckState,
+} from '../../../slice/buildSlice';
 import { InteriorSelect } from './InteriorSelect';
 import { ExteriorSelect } from './ExteriorSelect';
 import { openModal } from '../../../slice/modelSlice';
@@ -29,6 +36,7 @@ export function ColorSelect() {
   const type = useSelector((state: any) => state.build.type);
   const targetInterior = useSelector((state: any) => state.build.targetInterior);
   const targetModelId = useSelector((state: any) => state.build.targetModelId);
+  const selected = useSelector((state: any) => state.build.selected);
 
   // const refreshExterior = () => {
   //   const payload = {
@@ -87,7 +95,6 @@ export function ColorSelect() {
       const onSubmit = () => {
         if (type === 'trim') {
           // modelChange
-          // **********************
           navigate(`/build/option?id=${id}&name=${name}&modelId=${targetModelId}`);
           const paylaod = {
             beforeEx: exteriorId,
@@ -98,12 +105,18 @@ export function ColorSelect() {
             modelId: targetModelId,
           };
           dispatch(changeTrim(paylaod));
-          const payload = {
+          const payload1 = {
             carNameId: id,
             modelId: targetModelId,
             exteriorId: nextExteriorId,
           };
-          dispatch(fetchInterior(payload));
+          dispatch(fetchInterior(payload1));
+          const payload2 = {
+            currentId: modelId,
+            targetId: targetModelId,
+            selected,
+          };
+          dispatch(changeModel(payload2));
         }
         dispatch(resetCheckState());
       };

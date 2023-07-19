@@ -42,6 +42,7 @@ const api = {
   fetchClosestTrim: ({ interior, modelId }: FetchClosestTrimReq) =>
     BUILD_URL + INTERIOR_TRIM_URL + `?interior=${interior}` + `&modelId=${modelId}`,
   modelPreview: () => BUILD_URL + MODEL_PREVIEW_URL,
+  changeModel: () => BUILD_URL + MODEL_URL,
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
   changePowertrain: () => MODELS_URL + POWERTRAIN_URL,
