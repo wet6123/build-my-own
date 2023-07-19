@@ -98,3 +98,11 @@ export interface FetchModelInfoRes {
   displacement: number;
   averageMileage: number;
 }
+
+export interface FetchOptionInfoReq {
+  optionList: Array<number>;
+}
+
+export interface FetchOptionInfoRes {
+  optionInfo: Array<Option>;
+}

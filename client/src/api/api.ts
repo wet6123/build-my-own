@@ -21,6 +21,7 @@ const MODEL_URL = '/model';
 const MODEL_INFO_URL = '/model/info';
 const MODEL_PREVIEW_URL = '/model/preview';
 const OPTION_URL = '/option';
+const OPTION_INFO_URL = '/option/info';
 
 // model
 const POWERTRAIN_URL = '/powertrain';
@@ -50,6 +51,7 @@ const api = {
   modelPreview: () => BUILD_URL + MODEL_PREVIEW_URL,
   changeModel: () => BUILD_URL + MODEL_URL,
   fetchModelInfo: ({ modelId }: FetchModelInfoReq) => BUILD_URL + MODEL_INFO_URL + `?modelId=${modelId}`,
+  fetchOptionInfo: () => BUILD_URL + OPTION_INFO_URL,
   // model
   fetchPowertrainList: (carNameId: number) => MODELS_URL + POWERTRAIN_URL + `?car_name_id=${carNameId}`,
   changePowertrain: () => MODELS_URL + POWERTRAIN_URL,
