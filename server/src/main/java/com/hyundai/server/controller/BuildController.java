@@ -40,6 +40,7 @@ public class BuildController {
             String warning = null;
             int interiorId;
             int exteriorId;
+            String type;
 
 //            모델에서 가능한 색상인지 확인
             boolean modelCheck = buildService.isAvailableColorModel(req.getModelId(), req.getInterior(), req.getExterior());
@@ -51,10 +52,12 @@ public class BuildController {
                 available = true;
                 interiorId = req.getInterior();
                 exteriorId = req.getExterior();
+                type = "ok";
             } else if (!modelCheck) {
 //                모델에서 사용 불가능한 색상, 이전 색상 리턴
                 interiorId = req.getBeforeIn();
                 exteriorId = req.getBeforeEx();
+                type = "trim";
                 if (req.getInterior() != req.getBeforeIn()) {
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은  트림 변경 후 선택 가능합니다.";
@@ -68,18 +71,20 @@ public class BuildController {
                 exteriorId = req.getBeforeEx();
                 if (req.getInterior() != req.getBeforeIn()) {
 //                    사용 불가한 인테리어 선택
+                    type="interior";
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은 선택하신 외장색과 함께 제공되지 않는 색상입니다.\n" +
                             "외장색상을 변경해주세요.";
                 } else {
 //                    사용 불가한 익스테리어 선택
+                    type="exterior";
                     OptionDto option = buildService.getOptionByOptionId(req.getExterior());
                     warning = option.getName() + "은 선택하신 내장색과 함께 제공되지 않는 색상입니다.\n" +
                             "내장색상을 변경해주세요.";
                 }
             }
 
-            return ResponseEntity.ok(CheckColorCombinationRes.of(200, "success", available, warning, interiorId, exteriorId));
+            return ResponseEntity.ok(CheckColorCombinationRes.of(200, "success", available, warning, interiorId, exteriorId, type));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));

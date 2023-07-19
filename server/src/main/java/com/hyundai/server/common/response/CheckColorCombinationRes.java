@@ -13,8 +13,9 @@ public class CheckColorCombinationRes extends BaseResponseBody {
     private String warning;
     private int interiorId;
     private int exteriorId;
+    private String type;
 
-    public static CheckColorCombinationRes of(int statusCode, String message, boolean available, String warning, int interiorId, int exteriorId) {
+    public static CheckColorCombinationRes of(int statusCode, String message, boolean available, String warning, int interiorId, int exteriorId, String type) {
         CheckColorCombinationRes res = new CheckColorCombinationRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
@@ -22,6 +23,7 @@ public class CheckColorCombinationRes extends BaseResponseBody {
         res.setWarning(warning);
         res.setInteriorId(interiorId);
         res.setExteriorId(exteriorId);
+        res.setType(type);
         return res;
     }
 }
