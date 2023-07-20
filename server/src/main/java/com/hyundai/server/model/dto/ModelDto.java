@@ -17,4 +17,5 @@ public class ModelDto {
     private String modelName;
     private int displacement;
     private float averageMileage;
+    private String trim;
 }
