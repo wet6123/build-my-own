@@ -219,8 +219,10 @@ public class BuildController {
             List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected);
 //            모달 - 선택 시 삭제되는 옵션
             List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected);
+//            선택된 옵션
+            OptionDto target = buildService.getOptionInfo(req.getOptionId());
 
-            return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove));
+            return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove, target));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
