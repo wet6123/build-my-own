@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppDispatch } from '../../../store/store';
 import {
-  SetOptionExpand,
+  setOptionExpand,
   changeModel,
   changeTrim,
   checkExIn,
@@ -55,8 +55,8 @@ export function ColorSelect() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) dispatch(SetOptionExpand(true));
-      else dispatch(SetOptionExpand(false));
+      if (entries[0].isIntersecting) dispatch(setOptionExpand(true));
+      else dispatch(setOptionExpand(false));
     });
 
     detailRef.current && observer.observe(detailRef.current);

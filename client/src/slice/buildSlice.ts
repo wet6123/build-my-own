@@ -300,8 +300,11 @@ export const BuildSlice = createSlice({
     setShowPreview: (state, action) => {
       state.showPreview = action.payload;
     },
-    SetOptionExpand: (state, action) => {
+    setOptionExpand: (state, action) => {
       state.optionExpand = action.payload;
+    },
+    setTargetModelId: (state, action) => {
+      state.targetModelId = action.payload;
     },
   },
   extraReducers: builder => {
@@ -389,8 +392,6 @@ export const BuildSlice = createSlice({
         state.type = action.payload.type;
         state.warning = action.payload.warning;
         if (action.payload.available) {
-          state.interiorId = 0;
-          state.exteriorId = 0;
           state.nextInteriorId = action.payload.interiorId;
           state.nextExteriorId = action.payload.exteriorId;
         }
@@ -483,7 +484,8 @@ export const {
   setInteriorPreview,
   setExteriorPreview,
   setShowPreview,
-  SetOptionExpand,
+  setOptionExpand,
+  setTargetModelId,
 } = BuildSlice.actions;
 
 export default BuildSlice.reducer;

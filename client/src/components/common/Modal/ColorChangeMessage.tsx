@@ -41,7 +41,7 @@ export function ColorChangeMessage({ currentId, targetId }: { currentId: number;
               <TrimChangeTile trim={afterTrim} />
             </div>
           </style.TrimWrapper>
-          <ModelChangeAddRemove otherPrice={afterTrim.price - beforeTrim.price} />
+          <ModelChangeAddRemove />
         </>
       ) : null}
     </>

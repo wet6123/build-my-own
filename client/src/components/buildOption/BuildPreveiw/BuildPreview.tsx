@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
+  changeModel,
+  changeTrim,
+  fetchInterior,
   fetchModelInfo,
   fetchOptionInfo,
+  resetCheckState,
   setExteriorPreview,
   setInteriorPreview,
   setShowPreview,
@@ -11,15 +15,17 @@ import {
 } from '../../../slice/buildSlice';
 import { AppDispatch } from '../../../store/store';
 import * as style from '../../../styles/buildOption/bulidPreviewStyle';
+import { fetchPowertrainCombination, openModal } from '../../../slice/modelSlice';
+import { ModelChangeMessage } from '../../common/Modal/ModelChangeMessage';
 
 export function BuildPreview() {
-  const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const id = Number(searchParams.get('id'));
   const name = String(searchParams.get('name'));
   const modelId = Number(searchParams.get('modelId'));
 
+  const dispatch = useDispatch<AppDispatch>();
   const modelName = useSelector((state: any) => state.build.modelName);
   const trim = useSelector((state: any) => state.build.trim);
   const price = useSelector((state: any) => state.build.price);
@@ -33,7 +39,10 @@ export function BuildPreview() {
   const exteriorPreview = useSelector((state: any) => state.build.exteriorPreview);
   const interiorPreview = useSelector((state: any) => state.build.interiorPreview);
   const showPreview = useSelector((state: any) => state.build.showPreview);
+  const powertrainCombination = useSelector((state: any) => state.powertrain.powertrainCombination);
+  const targetModelId = useSelector((state: any) => state.build.targetModelId);
 
+  // 옵션 가격 불러오기
   useEffect(() => {
     if (interiorId && exteriorId) {
       const payload = {
@@ -56,6 +65,7 @@ export function BuildPreview() {
     dispatch(setTotalPrice(res));
   }, [price, optionInfo]);
 
+  // 모델 정보 불러오기
   useEffect(() => {
     const payload = {
       modelId,
@@ -80,6 +90,48 @@ export function BuildPreview() {
     }
   }, [exteriorId]);
 
+  // 모델 변경 모달
+
+  useEffect(() => {
+    dispatch(fetchPowertrainCombination(id));
+  }, [id]);
+
+  const openModelChange = () => {
+    const message = () => <ModelChangeMessage />;
+    const children = message();
+    const onCancel = () => {
+      dispatch(resetCheckState());
+    };
+    const onSubmit = (targetId: number) => {
+      // modelChange
+      navigate(`/build/option?id=${id}&name=${name}&modelId=${targetId}`);
+      const paylaod = {
+        beforeEx: exteriorId,
+        beforeIn: interiorId,
+        carNameId: id,
+        exterior: exteriorId,
+        interior: interiorId,
+        modelId: targetId,
+      };
+      dispatch(changeTrim(paylaod));
+      const payload1 = {
+        carNameId: id,
+        modelId: targetId,
+        exteriorId,
+      };
+      dispatch(fetchInterior(payload1));
+      const payload2 = {
+        currentId: modelId,
+        targetId,
+        selected,
+      };
+      dispatch(changeModel(payload2));
+      dispatch(resetCheckState());
+    };
+
+    dispatch(openModal({ children, onCancel, onSubmit }));
+  };
+
   return (
     <>
       <style.PreviewHeader>
@@ -88,7 +140,9 @@ export function BuildPreview() {
             {name} - {trim}
           </style.PreviewTitle>
           <style.PreviewModelName>{modelName}</style.PreviewModelName>
-          <style.PreviewBtn type="button">모델변경 &gt;</style.PreviewBtn>
+          <style.PreviewBtn onClick={openModelChange} type="button">
+            모델변경 &gt;
+          </style.PreviewBtn>
           <style.PreviewBtn type="button">카탈로그 &gt;</style.PreviewBtn>
         </div>
         <style.PreviewWrapper>

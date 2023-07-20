@@ -6,12 +6,14 @@ export function Modal() {
   const dispatch = useDispatch();
   const showModal = useSelector((state: any) => state.powertrain.showModal);
   const modalData = useSelector((state: any) => state.powertrain.modalData);
+  const targetModelId = useSelector((state: any) => state.build.targetModelId);
+
   const Cancel = () => {
     modalData.onCancel?.();
     dispatch(closeModal());
   };
   const Submit = () => {
-    modalData.onSubmit?.();
+    modalData.onSubmit?.(targetModelId);
     dispatch(closeModal());
   };
 

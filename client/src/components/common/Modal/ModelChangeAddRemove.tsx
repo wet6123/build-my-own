@@ -3,7 +3,7 @@ import { OptionAddRemoveTile } from './OptionAddRemoveTile';
 import { Option } from '../../../types/sliceType';
 import * as style from '../../../styles/common/addRemoveStyle';
 
-export function ModelChangeAddRemove({ otherPrice }: { otherPrice: number }) {
+export function ModelChangeAddRemove() {
   const previewPrice = useSelector((state: any) => state.build.previewPrice);
   const previewAdd = useSelector((state: any) => state.build.previewAdd);
   const previewRemove = useSelector((state: any) => state.build.previewRemove);
@@ -28,7 +28,7 @@ export function ModelChangeAddRemove({ otherPrice }: { otherPrice: number }) {
       </style.Wrapper>
       <style.OptionDiv>
         <style.OptionWord>변경 금액</style.OptionWord>
-        <style.OptionWord>{(otherPrice + previewPrice).toLocaleString('ko-KR')} 원</style.OptionWord>
+        <style.OptionWord>{previewPrice.toLocaleString('ko-KR')} 원</style.OptionWord>
       </style.OptionDiv>
     </>
   );

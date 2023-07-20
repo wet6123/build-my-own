@@ -18,6 +18,7 @@ export const SectionWrapper = styled.div`
 
 export const PreviewWrapper = styled.section<{ show: boolean }>`
   width: ${props => (props.show ? 'calc(100% - 640px)' : 'calc(100% - 1162px)')};
+  min-width: 350px;
   height: 100%;
   padding: 160px 80px 0 72px;
   position: fixed;
