@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { BuildHeader } from '../components/buildHeader/BuildHeader';
 import { BuildPreview } from '../components/buildOption/BuildPreveiw/BuildPreview';
 import { Modal } from '../components/common/Modal';
@@ -8,6 +10,12 @@ import { OptionSelect } from '../components/buildOption/OptionSelect/OptionSelec
 import * as style from '../styles/buildOption/buildPageStyle';
 
 export function BuildOptionPage() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = Number(searchParams.get('id'));
+  const name = String(searchParams.get('name'));
+  const modelId = Number(searchParams.get('modelId'));
+
   const optionExpand = useSelector((state: any) => state.build.optionExpand);
   const showModal = useSelector((state: any) => state.powertrain.showModal);
 
@@ -27,6 +35,11 @@ export function BuildOptionPage() {
     if (!toggle) window.scrollTo(0, position);
   }, [toggle]);
 
+  // 완성 페이지 이동
+  const handleComplete = () => {
+    navigate(`/build/complete?id=${id}&name=${name}&modelId=${modelId}`);
+  };
+
   return (
     <style.Wrapper scroll={toggle} position={position}>
       <style.HaederWrapper>
@@ -42,6 +55,11 @@ export function BuildOptionPage() {
           <ColorSelect />
           <style.SelectHeader show={optionExpand}>옵션</style.SelectHeader>
           <OptionSelect />
+          <style.CompleteBtnWrapper>
+            <style.CompleteBtn onClick={handleComplete} type="button">
+              내 차 만들기 완료
+            </style.CompleteBtn>
+          </style.CompleteBtnWrapper>
         </style.SelectWrapper>
       </style.SectionWrapper>
       <Modal />

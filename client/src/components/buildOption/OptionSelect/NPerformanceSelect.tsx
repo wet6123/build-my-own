@@ -35,7 +35,7 @@ export function NPerformanceSelect() {
         제시합니다.
       </style.OptionDescription>
       <style.OptionUl>
-        {optionList?.map((NPerformanceOption: Option) => {
+        {optionList?.map((NPerformanceOption: Option, idx: number) => {
           if (NPerformanceOption.type === 'N Performance')
             return (
               <OptionTile
@@ -44,6 +44,7 @@ export function NPerformanceSelect() {
                 func={select}
                 key={NPerformanceOption.optionId}
                 forceUnavailable
+                index={idx}
               />
             );
         })}

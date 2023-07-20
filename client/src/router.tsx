@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { MainPage } from './pages/MainPage';
 import { BuildModelPage } from './pages/BuildModelPage';
 import { BuildOptionPage } from './pages/BuildOptionPage';
+import { BuildCompletePage } from './pages/BuildCompletePage';
 
 const routerData = [
   {
@@ -23,6 +24,13 @@ const routerData = [
     path: '/build/option',
     lable: 'OptionSelectPage',
     element: <BuildOptionPage />,
+    withAuth: false,
+  },
+  {
+    id: 3,
+    path: '/build/complete',
+    lable: 'CompletePage',
+    element: <BuildCompletePage />,
     withAuth: false,
   },
 ];

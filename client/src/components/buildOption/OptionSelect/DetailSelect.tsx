@@ -32,7 +32,7 @@ export function DetailSelect() {
       <style.OptionTitle>상세 품목</style.OptionTitle>
       <div>
         <style.OptionUl>
-          {optionList?.map((detailOption: Option) => {
+          {optionList?.map((detailOption: Option, idx: number) => {
             if (detailOption.type === 'detail item')
               return (
                 <OptionTile
@@ -41,6 +41,7 @@ export function DetailSelect() {
                   func={select}
                   key={detailOption.optionId}
                   forceUnavailable={false}
+                  index={idx}
                 />
               );
           })}

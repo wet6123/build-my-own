@@ -29,9 +29,6 @@ export function OptionSelect() {
       type: 'get',
     };
     dispatch(fetchOptionList(payload));
-    return () => {
-      dispatch(resetOptionList());
-    };
   }, []);
 
   useEffect(() => {

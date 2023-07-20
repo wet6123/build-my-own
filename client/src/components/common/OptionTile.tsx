@@ -6,14 +6,16 @@ export function OptionTile({
   isSelected,
   func,
   forceUnavailable,
+  index,
 }: {
   option: Option;
   isSelected: boolean;
   func: (id: number, isRemove: boolean) => void;
   forceUnavailable: boolean;
+  index: number;
 }) {
   return (
-    <style.OptionLi>
+    <style.OptionLi index={index}>
       <style.SelectBtn
         onClick={() => func(option.optionId, isSelected)}
         type="button"
