@@ -5,8 +5,8 @@ export const Background = styled.div<{ show: boolean }>`
   position: fixed;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   opacity: 0.7;
   background: #000;
   z-index: 98;
@@ -15,15 +15,18 @@ export const Background = styled.div<{ show: boolean }>`
 export const WindowBackground = styled.div<{ show: boolean }>`
   display: ${props => (props.show ? 'block' : 'none')};
   position: fixed;
+  overflow-y: auto;
   top: 0;
   right: 0;
+  width: 100vw;
+  height: 100vh;
   bottom: 0;
   left: 0;
   z-index: 97;
 `;
 
 export const Window = styled.div`
-  position: relative;
+  position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%);
@@ -31,7 +34,7 @@ export const Window = styled.div`
   margin-top: 7.5vh;
   padding: 80px 40px;
   height: auto;
-  width: 600px;
+  width: 840px;
   background-color: white;
   z-index: 99;
 `;

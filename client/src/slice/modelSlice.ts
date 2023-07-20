@@ -134,7 +134,7 @@ export const PowertarinSlice = createSlice({
       .addCase(fetchPowertrainCombination.fulfilled, (state, action) => {
         state.loading = false;
         state.error = '';
-        state.powertrainCombination = action.payload;
+        state.powertrainCombination = action.payload.powertrainCombination;
       })
       .addCase(fetchPowertrainCombination.rejected, (state, action) => {
         state.loading = false;

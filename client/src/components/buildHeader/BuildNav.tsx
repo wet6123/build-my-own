@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { openModal } from '../../slice/modelSlice';
 import * as style from '../../styles/buildModel/buildNavBarStyle';
+import { resetColor } from '../../slice/buildSlice';
 
 function message() {
   return (
@@ -26,6 +27,7 @@ export function BuildNav() {
   const onCancel = () => {};
   const onSubmit = () => {
     navigate(`/build/model?id=${id}&name=${name}`);
+    dispatch(resetColor());
   };
 
   const modal = () => {

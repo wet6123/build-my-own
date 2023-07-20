@@ -32,6 +32,16 @@ export interface Trim {
   drivetrain: string;
 }
 
+export interface Option {
+  optionId: number;
+  price: number;
+  type: string;
+  name: string;
+  image: string;
+  preview: string;
+  available: boolean;
+}
+
 export interface AxiosResponseError {
   data: string;
   statusCode: number;
