@@ -233,13 +233,13 @@ public class BuildController {
     }
 
     @GetMapping("/model/info")
-    @ApiOperation(value = "모델 정보 로드(완성 화면)", notes = "완성 화면에서 사용될 모델 정보(모델 이름, 가격, 배기량, 평균 연비)를 출력합니다.")
+    @ApiOperation(value = "모델 정보 로드(완성 화면)", notes = "완성 화면에서 사용될 모델 정보(모델 이름, 가격, 배기량, 평균 연비, 트림 이름)를 출력합니다.")
     @ApiImplicitParam(name = "modelId", value = "모델 id")
     public ResponseEntity<? extends BaseResponseBody> showModelInfo(@RequestParam("modelId") Integer modelId) {
         try {
             ModelDto model = buildService.getModelInfo(modelId);
 
-            return ResponseEntity.ok(ShowModelInfoRes.of(200, "success", model.getModelName(), model.getModelPrice(), model.getDisplacement(), model.getAverageMileage()));
+            return ResponseEntity.ok(ShowModelInfoRes.of(200, "success", model.getModelName(), model.getTrim(), model.getModelPrice(), model.getDisplacement(), model.getAverageMileage()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
