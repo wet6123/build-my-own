@@ -1,5 +1,12 @@
 import { styled } from 'styled-components';
 
+export const Wrapper = styled.div<{ scroll: boolean; position: number }>`
+  position: ${props => (props.scroll ? 'fixed' : 'relative')};
+  top: ${props => (props.scroll ? `-${props.position}px` : '')};
+  overflow-y: ${props => (props.scroll ? 'scroll' : '')};
+  width: ${props => (props.scroll ? '100%' : '')};
+`;
+
 export const HaederWrapper = styled.div`
   position: fixed;
   left: 0;

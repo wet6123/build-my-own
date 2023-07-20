@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BuildHeader } from '../components/buildHeader/BuildHeader';
 import { BuildPreview } from '../components/buildOption/BuildPreveiw/BuildPreview';
@@ -8,9 +9,26 @@ import * as style from '../styles/buildOption/buildPageStyle';
 
 export function BuildOptionPage() {
   const optionExpand = useSelector((state: any) => state.build.optionExpand);
+  const showModal = useSelector((state: any) => state.powertrain.showModal);
+
+  const [position, setPosition] = useState(0);
+  const [toggle, setToggle] = useState(false);
+
+  useEffect(() => {
+    if (showModal) {
+      setToggle(true);
+      setPosition(Math.round(window.scrollY));
+    } else {
+      setToggle(false);
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    if (!toggle) window.scrollTo(0, position);
+  }, [toggle]);
 
   return (
-    <>
+    <style.Wrapper scroll={toggle} position={position}>
       <style.HaederWrapper>
         <BuildHeader />
       </style.HaederWrapper>
@@ -27,6 +45,6 @@ export function BuildOptionPage() {
         </style.SelectWrapper>
       </style.SectionWrapper>
       <Modal />
-    </>
+    </style.Wrapper>
   );
 }

@@ -15,6 +15,7 @@ export const Background = styled.div<{ show: boolean }>`
 export const WindowBackground = styled.div<{ show: boolean }>`
   display: ${props => (props.show ? 'block' : 'none')};
   position: fixed;
+  overflow-y: auto;
   top: 0;
   right: 0;
   width: 100vw;
