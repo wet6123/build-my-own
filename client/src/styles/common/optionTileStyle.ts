@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 
 // optionTile
-export const OptionLi = styled.li`
+export const OptionLi = styled.li<{ index: number }>`
   position: relative;
   display: flex;
   flex-direction: column;
   width: 237px;
   height: 276px;
-  margin-right: 33px;
+  margin-right: ${props => ((props.index + 1) % 4 ? '33px' : ' 0px')};
   margin-bottom: 33px;
   border: 1px solid #ccc;
 `;

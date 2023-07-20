@@ -36,7 +36,7 @@ export const PreviewWrapper = styled.section<{ show: boolean }>`
 export const SelectWrapper = styled.section<{ show: boolean }>`
   width: ${props => (props.show ? '640px' : '1162px')};
   height: 100%;
-  padding: 120px 60px;
+  padding: 120px 50px 120px 60px;
   border-left: 1px solid #d3d3d3;
 `;
 
@@ -66,4 +66,19 @@ export const SelectHeader = styled.div<{ show: boolean }>`
   font-weight: 600;
   background: #fff;
   z-index: 85;
+`;
+
+export const CompleteBtnWrapper = styled.div`
+  width: 100%;
+  margin-top: 60px;
+  text-align: center;
+`;
+
+export const CompleteBtn = styled.button`
+  width: 180px;
+  height: 50px;
+  background: #002c5f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
 `;

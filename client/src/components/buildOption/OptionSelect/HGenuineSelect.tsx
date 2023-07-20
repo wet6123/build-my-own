@@ -34,7 +34,7 @@ export function HGenuineSelect() {
         다양한 일반 편의, 레저 상품 등으로 차별화 커스터마이징을 원하는 고객의 니즈 및 라이프스타일을 지원합니다.
       </style.OptionDescription>
       <style.OptionUl>
-        {optionList?.map((HGenuineOption: Option) => {
+        {optionList?.map((HGenuineOption: Option, idx: number) => {
           if (HGenuineOption.type === 'H Genuine Accessories' && HGenuineOption.available)
             return (
               <OptionTile
@@ -43,6 +43,7 @@ export function HGenuineSelect() {
                 func={select}
                 key={HGenuineOption.optionId}
                 forceUnavailable={false}
+                index={idx}
               />
             );
         })}
