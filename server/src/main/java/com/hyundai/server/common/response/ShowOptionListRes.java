@@ -14,8 +14,9 @@ public class ShowOptionListRes extends BaseResponseBody{
     private List<OptionDto> options;
     private List<OptionDto> add;
     private List<OptionDto> remove;
+    private OptionDto target;
 
-    public static ShowOptionListRes of(Integer statusCode, String message, List<Integer> selected, List<OptionDto> options, List<OptionDto> add, List<OptionDto> remove) {
+    public static ShowOptionListRes of(Integer statusCode, String message, List<Integer> selected, List<OptionDto> options, List<OptionDto> add, List<OptionDto> remove, OptionDto target) {
         ShowOptionListRes res = new ShowOptionListRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
@@ -23,6 +24,7 @@ public class ShowOptionListRes extends BaseResponseBody{
         res.setOptions(options);
         res.setAdd(add);
         res.setRemove(remove);
+        res.setTarget(target);
         return res;
     }
 }

@@ -4,6 +4,7 @@ import com.hyundai.server.common.request.*;
 import com.hyundai.server.common.response.*;
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 import com.hyundai.server.model.service.BuildService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,6 +40,7 @@ public class BuildController {
             String warning = null;
             int interiorId;
             int exteriorId;
+            String type;
 
 //            모델에서 가능한 색상인지 확인
             boolean modelCheck = buildService.isAvailableColorModel(req.getModelId(), req.getInterior(), req.getExterior());
@@ -50,10 +52,12 @@ public class BuildController {
                 available = true;
                 interiorId = req.getInterior();
                 exteriorId = req.getExterior();
+                type = "ok";
             } else if (!modelCheck) {
 //                모델에서 사용 불가능한 색상, 이전 색상 리턴
                 interiorId = req.getBeforeIn();
                 exteriorId = req.getBeforeEx();
+                type = "trim";
                 if (req.getInterior() != req.getBeforeIn()) {
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은  트림 변경 후 선택 가능합니다.";
@@ -67,18 +71,20 @@ public class BuildController {
                 exteriorId = req.getBeforeEx();
                 if (req.getInterior() != req.getBeforeIn()) {
 //                    사용 불가한 인테리어 선택
+                    type="interior";
                     OptionDto option = buildService.getOptionByOptionId(req.getInterior());
                     warning = option.getName() + "은 선택하신 외장색과 함께 제공되지 않는 색상입니다.\n" +
                             "외장색상을 변경해주세요.";
                 } else {
 //                    사용 불가한 익스테리어 선택
+                    type="exterior";
                     OptionDto option = buildService.getOptionByOptionId(req.getExterior());
                     warning = option.getName() + "은 선택하신 내장색과 함께 제공되지 않는 색상입니다.\n" +
                             "내장색상을 변경해주세요.";
                 }
             }
 
-            return ResponseEntity.ok(CheckColorCombinationRes.of(200, "success", available, warning, interiorId, exteriorId));
+            return ResponseEntity.ok(CheckColorCombinationRes.of(200, "success", available, warning, interiorId, exteriorId, type));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
@@ -98,6 +104,30 @@ public class BuildController {
             List<OptionDto> interiorList = buildService.getInteriorList(req.getCarNameId(), req.getModelId(), req.getExterior());
 
             return ResponseEntity.ok(ShowInteriorRes.of(200, "success", interiorList));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500)
+                    .body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/interior/trim")
+    @ApiOperation(value = "트림 변경이 필요한 내장 색상 변경", notes = "변경되는 트림 정보, 가장 가까운 모델, 변경 후 내장 색상 출력")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "modelId", value = "모델 id"),
+            @ApiImplicitParam(name = "interior", value = "내장 id")
+    })
+    public ResponseEntity<? extends BaseResponseBody> changeInteriorTrim(ChangeInteriorTrimReq req) {
+        try {
+//            변경할 가장 가까운 모델 id
+            Integer modelId = buildService.getClosestModelId(req.getInterior(), req.getModelId());
+//            선택할 내장 색상 id
+            Integer interior = req.getInterior();
+//            변경전 트림 정보
+            TrimDto beforeTrim = buildService.getTrimByModelId(req.getModelId());
+//            변경후 트림 정보
+            TrimDto afterTrim = buildService.getTrimByModelId(modelId);
+
+            return ResponseEntity.ok(ChangeInteriorTrimRes.of(200, "success", beforeTrim, afterTrim, modelId, interior ));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
@@ -125,12 +155,12 @@ public class BuildController {
 
     @PostMapping("/model/preview")
     @ApiOperation(value = "모델 변경 미리보기", notes = "모델 변경 시 미리보기 모달에서 추가, 삭제 되는 옵션 표기")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
-    })
-    public ResponseEntity<? extends BaseResponseBody> changeModelPreview (ChangeModelReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> changeModelPreview (@RequestBody ChangeModelReq req) {
         try {
 //            모델 변경시 변경되는 가격
             int price = buildService.getChangeModelPrice(req.getCurrentId(), req.getTargetId(), req.getSelected());
@@ -149,12 +179,12 @@ public class BuildController {
 
     @PostMapping("/model")
     @ApiOperation(value = "모델 변경", notes = "모델 변경 시 유지되는 옵션, 선택 가능한 옵션 목록")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
-    })
-    public ResponseEntity<? extends BaseResponseBody> changeModel(ChangeModelReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "currentId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "targetId", value = "목표 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> changeModel(@RequestBody ChangeModelReq req) {
         try {
 //            모델 변경 후 유지되는 옵션
             List<Integer> selected = buildService.getChangeModelRemainOption(req.getTargetId(), req.getSelected());
@@ -170,15 +200,15 @@ public class BuildController {
 
     @PostMapping("/option")
     @ApiOperation(value = "옵션 목록", notes = "선택된 옵션에 따라서 결과 출력")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "modelId", value = "현재 모델 id"),
-            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트"),
-            @ApiImplicitParam(name = "type", value = "add/remove 동작 타입"),
-            @ApiImplicitParam(name = "optionId", value = "옵션 id")
-    })
-    public ResponseEntity<? extends BaseResponseBody> showOptionList(ShowOptionListReq req) {
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "modelId", value = "현재 모델 id"),
+//            @ApiImplicitParam(name = "selected", value = "선택된 옵션 id 리스트"),
+//            @ApiImplicitParam(name = "type", value = "add/remove/get 동작 타입"),
+//            @ApiImplicitParam(name = "optionId", value = "옵션 id")
+//    })
+    public ResponseEntity<? extends BaseResponseBody> showOptionList(@RequestBody ShowOptionListReq req) {
         try {
-            if(!(req.getType().equals("add")||req.getType().equals("remove")))
+            if(!(req.getType().equals("add")||req.getType().equals("remove")||req.getType().equals("get")))
                 throw new Exception("type이 잘못 입력되었습니다.");
 
 //            선택된 옵션 리스트 (옵션 추가/삭제 후)
@@ -186,11 +216,13 @@ public class BuildController {
 //            화면에 보여줄 옵션 리스트 선택 가능/불가 표기
             List<OptionDto> options = buildService.getChangeModelOptionList(req.getModelId(), selected);
 //            모달 - 선택 시 추가되는 옵션
-            List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected, req.getType());
+            List<OptionDto> add = buildService.getAddOption(req.getSelected(), selected);
 //            모달 - 선택 시 삭제되는 옵션
-            List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected, req.getType());
+            List<OptionDto> remove = buildService.getRemoveOption(req.getSelected(), selected);
+//            선택된 옵션
+            OptionDto target = buildService.getOptionInfo(req.getOptionId());
 
-            return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove));
+            return ResponseEntity.ok(ShowOptionListRes.of(200, "success", selected, options, add, remove, target));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
@@ -201,27 +233,26 @@ public class BuildController {
     }
 
     @GetMapping("/model/info")
-    @ApiOperation(value = "모델 정보 로드(완성 화면)", notes = "완성 화면에서 사용될 모델 정보(모델 이름, 가격, 배기량, 평균 연비)를 출력합니다.")
+    @ApiOperation(value = "모델 정보 로드(완성 화면)", notes = "완성 화면에서 사용될 모델 정보(모델 이름, 가격, 배기량, 평균 연비, 트림 이름)를 출력합니다.")
     @ApiImplicitParam(name = "modelId", value = "모델 id")
     public ResponseEntity<? extends BaseResponseBody> showModelInfo(@RequestParam("modelId") Integer modelId) {
         try {
             ModelDto model = buildService.getModelInfo(modelId);
 
-            return ResponseEntity.ok(ShowModelInfoRes.of(200, "success", model.getModelName(), model.getModelPrice(), model.getDisplacement(), model.getAverageMileage()));
+            return ResponseEntity.ok(ShowModelInfoRes.of(200, "success", model.getModelName(), model.getTrim(), model.getModelPrice(), model.getDisplacement(), model.getAverageMileage()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));
         }
     }
 
-    @GetMapping("/option")
-    @ApiOperation(value = "단일 옵션 조회 (완성 화면)", notes = "단일 옵션의 정보를 조회해서 반환합니다.")
-    @ApiImplicitParam(name = "optionId", value = "옵션 id")
-    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestParam("optionId") Integer optionId) {
+    @PostMapping("/option/info")
+    @ApiOperation(value = "옵션 목록 조회 (완성 화면)", notes = "옵션 리스트의 정보를 조회해서 반환합니다.")
+    public ResponseEntity<? extends BaseResponseBody> showOptionInfo(@RequestBody ShowOptionInfoReq req) {
         try {
-            OptionDto option = buildService.getOptionInfo(optionId);
+            List<OptionDto> optionInfo = buildService.getOptionInfoList(req.getOptionList());
 
-            return ResponseEntity.ok(ShowOptionInfoRes.of(200, "success", option.getOptionId(), option.getPrice(), option.getType(), option.getName(), option.getImage(), option.getPreview(), option.getAvailable()));
+            return ResponseEntity.ok(ShowOptionInfoRes.of(200, "success", optionInfo));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500)
                     .body(BaseResponseBody.of(500, e.getMessage()));

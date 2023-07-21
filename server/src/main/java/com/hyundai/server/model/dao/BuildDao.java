@@ -2,6 +2,7 @@ package com.hyundai.server.model.dao;
 
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -29,4 +30,7 @@ public interface BuildDao {
     List<OptionDto> selectRequiredOption(HashMap<String, Object> map);
     List<OptionDto> selectExclusiveOption(HashMap<String, Object> map);
     List<OptionDto> selectAvailableOption(HashMap<String, Object> map);
+//    가장 가까운 modelId
+    Integer selectClosestModelId(HashMap<String, Object> map);
+    TrimDto selectTrimByModelId(Integer modelId);
 }

@@ -22,6 +22,20 @@
         <result column="model_name" property="modelName"/>
         <result column="displacement" property="displacement"/>
         <result column="average_mileage" property="averageMileage"/>
+        <result column="trim" property="trim"/>
+    </resultMap>
+
+    <resultMap id="trimMap" type="trimDto">
+        <id column="model_id" property="modelId"/>
+        <result column="trim" property="trim"/>
+        <result column="model_price" property="price"/>
+        <result column="model_image" property="image"/>
+        <result column="detail_1" property="detail1"/>
+        <result column="detail_2" property="detail2"/>
+        <result column="detail_3" property="detail3"/>
+        <result column="engine" property="engine"/>
+        <result column="transmission" property="transmission"/>
+        <result column="drivetrain" property="drivetrain"/>
     </resultMap>
 
     <select id="selectOptionByOptionId" parameterType="int" resultMap="optionMap">
@@ -75,8 +89,18 @@
     </select>
 
     <select id="selectModelByModelId" parameterType="int" resultMap="modelMap">
-        SELECT model_id, car_name_id, powertrain_id, trim_id, model_price, model_image, model_name, displacement, average_mileage
+        SELECT model_id,
+               car_name_id,
+               powertrain_id,
+               models.trim_id,
+               model_price,
+               model_image,
+               model_name,
+               displacement,
+               average_mileage,
+               trim
         FROM models
+                 JOIN trims ON models.trim_id = trims.trim_id
         WHERE model_id = #{modelId};
     </select>
 
@@ -93,7 +117,8 @@
                  JOIN required_options ON mo1.id = required_options.model_option_id
                  JOIN model_option mo2 ON mo2.id = required_options.required_id
                  JOIN options ON mo2.option_id = options.option_id
-        WHERE mo1.option_id = #{optionId}
+        WHERE mo1.is_required = true
+          AND mo1.option_id = #{optionId}
           AND mo1.model_id = #{modelId};
     </select>
 
@@ -105,7 +130,9 @@
                  JOIN model_option mo2
         ON ex2.model_option_id = mo2.id
             JOIN options ON mo2.option_id = options.option_id
-        WHERE mo1.option_id = #{optionId}
+        WHERE mo1.is_exclusive = true
+          AND mo2.is_exclusive = true
+          AND mo1.option_id = #{optionId}
           AND mo1.model_id = #{modelId};
     </select>
 
@@ -117,5 +144,23 @@
                  JOIN options ON mo2.option_id = options.option_id
         WHERE mo1.option_id = #{optionId}
           AND mo1.model_id = #{modelId};
+    </select>
+
+
+    <select id="selectClosestModelId" parameterType="hashmap" resultType="int">
+        SELECT DISTINCT MIN(m1.model_id)
+        FROM options
+                 JOIN model_option ON options.option_id = model_option.option_id
+                 JOIN models m1 ON m1.model_id = model_option.model_id
+                 JOIN models m2 ON m1.powertrain_id = m2.powertrain_id
+        WHERE options.option_id = #{interior} AND m2.model_id = #{modelId};
+    </select>
+
+    <select id="selectTrimByModelId" parameterType="int" resultMap="trimMap">
+        SELECT DISTINCT `model_id`, `trim`, `model_price`, `model_image`, `detail_1`, `detail_2`, `detail_3`, `engine`, `transmission`, `drivetrain`
+        FROM models
+                 JOIN trims ON models.trim_id = trims.trim_id
+                 JOIN powertrain ON models.powertrain_id = powertrain.id
+        WHERE model_id = #{modelId};
     </select>
 </mapper>

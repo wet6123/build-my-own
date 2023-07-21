@@ -9,6 +9,19 @@
         <result column="drivetrain" property="drivetrain"/>
     </resultMap>
 
+    <resultMap id="trimMap" type="trimDto">
+        <id column="model_id" property="modelId"/>
+        <result column="trim" property="trim"/>
+        <result column="model_price" property="price"/>
+        <result column="model_image" property="image"/>
+        <result column="detail_1" property="detail1"/>
+        <result column="detail_2" property="detail2"/>
+        <result column="detail_3" property="detail3"/>
+        <result column="engine" property="engine"/>
+        <result column="transmission" property="transmission"/>
+        <result column="drivetrain" property="drivetrain"/>
+    </resultMap>
+
     <select id="selectEngine" parameterType="int" resultType="String">
         SELECT DISTINCT `engine`
         FROM models
@@ -37,8 +50,8 @@
         WHERE car_name_id = #{carNameId};
     </select>
 
-    <select id="selectTrimByModel" parameterType="hashmap" resultType="String">
-        SELECT DISTINCT trim
+    <select id="selectTrimByModel" parameterType="hashmap" resultMap="trimMap">
+        SELECT DISTINCT `model_id`, `trim`, `model_price`, `model_image`, `detail_1`, `detail_2`, `detail_3`, `engine`, `transmission`, `drivetrain`
         FROM models
         JOIN trims ON models.trim_id = trims.trim_id
         JOIN powertrain ON models.powertrain_id = powertrain.id

@@ -3,6 +3,7 @@ package com.hyundai.server.model.service;
 import com.hyundai.server.model.dao.BuildDao;
 import com.hyundai.server.model.dto.ModelDto;
 import com.hyundai.server.model.dto.OptionDto;
+import com.hyundai.server.model.dto.TrimDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +69,15 @@ public class BuildServiceImpl implements BuildService {
         map.put("carNameId", carNameId);
         map.put("exteriorId", exteriorId);
         List<OptionDto> exteriorInterior = buildDao.selectAvailableInterior(map);
-        for(OptionDto interior : allInterior) {
-            interior.setAvailable(modelInterior.contains(interior) && exteriorInterior.contains(interior));
+        if (exteriorId != 0) {
+            for (OptionDto interior : allInterior) {
+                interior.setAvailable(modelInterior.contains(interior) && exteriorInterior.contains(interior));
+            }
+        } else {
+//            최초로드
+            for (OptionDto interior : allInterior) {
+                interior.setAvailable(modelInterior.contains(interior));
+            }
         }
         return allInterior;
     }
@@ -122,7 +130,7 @@ public class BuildServiceImpl implements BuildService {
         List<OptionDto> availableOption = buildDao.selectAvailableOptionByModelId(targetId);
         for(Integer optionId : selected) {
             OptionDto tmp = buildDao.selectOptionByOptionId(optionId);
-            if(!availableOption.contains(tmp)) {
+            if(availableOption.contains(tmp)) {
                 result.add(tmp.getOptionId());
             }
         }
@@ -202,7 +210,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+    public List<OptionDto> getAddOption(List<Integer> beforeSelected, List<Integer> afterSelected) {
         List<OptionDto> res = new ArrayList<>();
         for(Integer after : afterSelected) {
             if(!beforeSelected.contains(after)) {
@@ -213,7 +221,7 @@ public class BuildServiceImpl implements BuildService {
     }
 
     @Override
-    public List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected, String type) {
+    public List<OptionDto> getRemoveOption(List<Integer> beforeSelected, List<Integer> afterSelected) {
         List<OptionDto> res = new ArrayList<>();
         for(Integer before : beforeSelected) {
             if(!afterSelected.contains(before)) {
@@ -230,6 +238,30 @@ public class BuildServiceImpl implements BuildService {
 
     @Override
     public OptionDto getOptionInfo(Integer optionId) {
+        if(optionId == null)
+            return null;
         return buildDao.selectOptionByOptionId(optionId);
+    }
+
+    @Override
+    public Integer getClosestModelId(Integer interior, Integer modelId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("interior", interior);
+        map.put("modelId", modelId);
+        return buildDao.selectClosestModelId(map);
+    }
+
+    @Override
+    public TrimDto getTrimByModelId(Integer modelId) {
+        return buildDao.selectTrimByModelId(modelId);
+    }
+
+    @Override
+    public List<OptionDto> getOptionInfoList(List<Integer> optionList) {
+        List<OptionDto> res = new ArrayList<>();
+        for(Integer optionId : optionList) {
+            res.add(buildDao.selectOptionByOptionId(optionId));
+        }
+        return res;
     }
 }
