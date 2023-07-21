@@ -12,7 +12,7 @@ public class ShowModelInfoRes extends BaseResponseBody{
     private Integer displacement;
     private float averageMileage;
 
-    public static ShowModelInfoRes of(Integer statusCode, String message, String modelName, Integer price, Integer displacement, float averageMileage) {
+    public static ShowModelInfoRes of(Integer statusCode, String message, String modelName, String trim, Integer price, Integer displacement, float averageMileage) {
         ShowModelInfoRes res = new ShowModelInfoRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
